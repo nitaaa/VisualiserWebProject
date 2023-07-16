@@ -1,0 +1,783 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuizVisualiserDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="ModuleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="moduleCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="moduleName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="archived" Type="bit" />
+        </EntityType>
+        <EntityType Name="ModuleTopic">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModuleUserRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="qText" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="qCorrectAnswer" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="qDistractor1" Type="nvarchar" MaxLength="255" />
+          <Property Name="qDistractor2" Type="nvarchar" MaxLength="255" />
+          <Property Name="qDistractor3" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="QuestionTopic">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="RoleDescription" Type="nvarchar" MaxLength="70" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestID" />
+          </Key>
+          <Property Name="TestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="testTitle" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="testType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="totalAttempts" Type="int" Nullable="false" />
+          <Property Name="uniqueAttempts" Type="int" Nullable="false" />
+          <Property Name="averageMark" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="testDate" Type="datetime" />
+          <Property Name="uploadDate" Type="datetime" Nullable="false" />
+          <Property Name="assessor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TestQuestion">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+            <PropertyRef Name="TestID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="TestID" Type="int" Nullable="false" />
+          <Property Name="correctSelected" Type="int" Nullable="false" />
+          <Property Name="qD1Selected" Type="int" />
+          <Property Name="qD2Selected" Type="int" />
+          <Property Name="qD3Selected" Type="int" />
+          <Property Name="markAllocation" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="difficultyIndex" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="discriminationIndex" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="topicName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="topicDescription" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="emailAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="salt" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__ModuleTop__Modul__4AB81AF0">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="ModuleTopic" Type="Self.ModuleTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="ModuleTopic">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleTop__Topic__4BAC3F29">
+          <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
+          <End Role="ModuleTopic" Type="Self.ModuleTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="ModuleTopic">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleUse__Modul__4E88ABD4">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleUse__RoleI__4D94879B">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleUse__UserI__4CA06362">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionT__Quest__4F7CD00D">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestionTopic" Type="Self.QuestionTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="QuestionTopic">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionT__Topic__5070F446">
+          <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
+          <End Role="QuestionTopic" Type="Self.QuestionTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="QuestionTopic">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Test__assessor__52593CB8">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="assessor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Test__ModuleID__5165187F">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestQuest__Quest__5441852A">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="TestQuestion" Type="Self.TestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="TestQuestion">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestQuest__TestI__534D60F1">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="TestQuestion" Type="Self.TestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestID" />
+            </Principal>
+            <Dependent Role="TestQuestion">
+              <PropertyRef Name="TestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRole__RoleID__5629CD9C">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRole__UserID__5535A963">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Module_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Module" Type="Self.Module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Module">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuizVisualiserDatabaseModelStoreContainer">
+          <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ModuleTopic" EntityType="Self.ModuleTopic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ModuleUserRole" EntityType="Self.ModuleUserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionTopic" EntityType="Self.QuestionTopic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestQuestion" EntityType="Self.TestQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Topic" EntityType="Self.Topic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ModuleTop__Modul__4AB81AF0" Association="Self.FK__ModuleTop__Modul__4AB81AF0">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="ModuleTopic" EntitySet="ModuleTopic" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleTop__Topic__4BAC3F29" Association="Self.FK__ModuleTop__Topic__4BAC3F29">
+            <End Role="Topic" EntitySet="Topic" />
+            <End Role="ModuleTopic" EntitySet="ModuleTopic" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleUse__Modul__4E88ABD4" Association="Self.FK__ModuleUse__Modul__4E88ABD4">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleUse__RoleI__4D94879B" Association="Self.FK__ModuleUse__RoleI__4D94879B">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleUse__UserI__4CA06362" Association="Self.FK__ModuleUse__UserI__4CA06362">
+            <End Role="User" EntitySet="User" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionT__Quest__4F7CD00D" Association="Self.FK__QuestionT__Quest__4F7CD00D">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="QuestionTopic" EntitySet="QuestionTopic" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionT__Topic__5070F446" Association="Self.FK__QuestionT__Topic__5070F446">
+            <End Role="Topic" EntitySet="Topic" />
+            <End Role="QuestionTopic" EntitySet="QuestionTopic" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Test__assessor__52593CB8" Association="Self.FK__Test__assessor__52593CB8">
+            <End Role="User" EntitySet="User" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Test__ModuleID__5165187F" Association="Self.FK__Test__ModuleID__5165187F">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestQuest__Quest__5441852A" Association="Self.FK__TestQuest__Quest__5441852A">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="TestQuestion" EntitySet="TestQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestQuest__TestI__534D60F1" Association="Self.FK__TestQuest__TestI__534D60F1">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestQuestion" EntitySet="TestQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRole__RoleID__5629CD9C" Association="Self.FK__UserRole__RoleID__5629CD9C">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRole__UserID__5535A963" Association="Self.FK__UserRole__UserID__5535A963">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Module_User" Association="Self.FK_Module_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Module" EntitySet="Module" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuizVisualiserDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="ModuleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="moduleCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="moduleName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="archived" Type="Boolean" />
+          <NavigationProperty Name="ModuleUserRoles" Relationship="Self.FK__ModuleUse__Modul__4E88ABD4" FromRole="Module" ToRole="ModuleUserRole" />
+          <NavigationProperty Name="Tests" Relationship="Self.FK__Test__ModuleID__5165187F" FromRole="Module" ToRole="Test" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Module_User" FromRole="Module" ToRole="User" />
+          <NavigationProperty Name="Topics" Relationship="Self.ModuleTopic" FromRole="Module" ToRole="Topic" />
+        </EntityType>
+        <EntityType Name="ModuleUserRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Module" Relationship="Self.FK__ModuleUse__Modul__4E88ABD4" FromRole="ModuleUserRole" ToRole="Module" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__ModuleUse__RoleI__4D94879B" FromRole="ModuleUserRole" ToRole="Roles" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ModuleUse__UserI__4CA06362" FromRole="ModuleUserRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="qText" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="qCorrectAnswer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="qDistractor1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qDistractor2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qDistractor3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TestQuestions" Relationship="Self.FK__TestQuest__Quest__5441852A" FromRole="Question" ToRole="TestQuestion" />
+          <NavigationProperty Name="Topics" Relationship="Self.QuestionTopic" FromRole="Question" ToRole="Topic" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleDescription" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ModuleUserRoles" Relationship="Self.FK__ModuleUse__RoleI__4D94879B" FromRole="Roles" ToRole="ModuleUserRole" />
+          <NavigationProperty Name="Users" Relationship="Self.UserRole" FromRole="Roles" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestID" />
+          </Key>
+          <Property Name="TestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="testTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="testType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="totalAttempts" Type="Int32" Nullable="false" />
+          <Property Name="uniqueAttempts" Type="Int32" Nullable="false" />
+          <Property Name="averageMark" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="testDate" Type="DateTime" Precision="3" />
+          <Property Name="uploadDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="assessor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Module" Relationship="Self.FK__Test__ModuleID__5165187F" FromRole="Test" ToRole="Module" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Test__assessor__52593CB8" FromRole="Test" ToRole="User" />
+          <NavigationProperty Name="TestQuestions" Relationship="Self.FK__TestQuest__TestI__534D60F1" FromRole="Test" ToRole="TestQuestion" />
+        </EntityType>
+        <EntityType Name="TestQuestion">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+            <PropertyRef Name="TestID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="TestID" Type="Int32" Nullable="false" />
+          <Property Name="correctSelected" Type="Int32" Nullable="false" />
+          <Property Name="qD1Selected" Type="Int32" />
+          <Property Name="qD2Selected" Type="Int32" />
+          <Property Name="qD3Selected" Type="Int32" />
+          <Property Name="markAllocation" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="difficultyIndex" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="discriminationIndex" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK__TestQuest__Quest__5441852A" FromRole="TestQuestion" ToRole="Question" />
+          <NavigationProperty Name="Test" Relationship="Self.FK__TestQuest__TestI__534D60F1" FromRole="TestQuestion" ToRole="Test" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="topicName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="topicDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Modules" Relationship="Self.ModuleTopic" FromRole="Topic" ToRole="Module" />
+          <NavigationProperty Name="Questions" Relationship="Self.QuestionTopic" FromRole="Topic" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="salt" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Modules" Relationship="Self.FK_Module_User" FromRole="User" ToRole="Module" />
+          <NavigationProperty Name="ModuleUserRoles" Relationship="Self.FK__ModuleUse__UserI__4CA06362" FromRole="User" ToRole="ModuleUserRole" />
+          <NavigationProperty Name="Tests" Relationship="Self.FK__Test__assessor__52593CB8" FromRole="User" ToRole="Test" />
+          <NavigationProperty Name="Roles" Relationship="Self.UserRole" FromRole="User" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK__ModuleUse__Modul__4E88ABD4">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Test__ModuleID__5165187F">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Module_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Module" Type="Self.Module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Module">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleUse__RoleI__4D94879B">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModuleUse__UserI__4CA06362">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ModuleUserRole" Type="Self.ModuleUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ModuleUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestQuest__Quest__5441852A">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="TestQuestion" Type="Self.TestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="TestQuestion">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Test__assessor__52593CB8">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="assessor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestQuest__TestI__534D60F1">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="TestQuestion" Type="Self.TestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestID" />
+            </Principal>
+            <Dependent Role="TestQuestion">
+              <PropertyRef Name="TestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ModuleTopic">
+          <End Role="Module" Type="Self.Module" Multiplicity="*" />
+          <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+        </Association>
+        <Association Name="QuestionTopic">
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+        </Association>
+        <Association Name="UserRole">
+          <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="QuizVisualiserDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Modules" EntityType="Self.Module" />
+          <EntitySet Name="ModuleUserRoles" EntityType="Self.ModuleUserRole" />
+          <EntitySet Name="Questions" EntityType="Self.Question" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Tests" EntityType="Self.Test" />
+          <EntitySet Name="TestQuestions" EntityType="Self.TestQuestion" />
+          <EntitySet Name="Topics" EntityType="Self.Topic" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__ModuleUse__Modul__4E88ABD4" Association="Self.FK__ModuleUse__Modul__4E88ABD4">
+            <End Role="Module" EntitySet="Modules" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Test__ModuleID__5165187F" Association="Self.FK__Test__ModuleID__5165187F">
+            <End Role="Module" EntitySet="Modules" />
+            <End Role="Test" EntitySet="Tests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Module_User" Association="Self.FK_Module_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Module" EntitySet="Modules" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleUse__RoleI__4D94879B" Association="Self.FK__ModuleUse__RoleI__4D94879B">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModuleUse__UserI__4CA06362" Association="Self.FK__ModuleUse__UserI__4CA06362">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ModuleUserRole" EntitySet="ModuleUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestQuest__Quest__5441852A" Association="Self.FK__TestQuest__Quest__5441852A">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="TestQuestion" EntitySet="TestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Test__assessor__52593CB8" Association="Self.FK__Test__assessor__52593CB8">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Test" EntitySet="Tests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestQuest__TestI__534D60F1" Association="Self.FK__TestQuest__TestI__534D60F1">
+            <End Role="Test" EntitySet="Tests" />
+            <End Role="TestQuestion" EntitySet="TestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleTopic" Association="Self.ModuleTopic">
+            <End Role="Module" EntitySet="Modules" />
+            <End Role="Topic" EntitySet="Topics" />
+          </AssociationSet>
+          <AssociationSet Name="QuestionTopic" Association="Self.QuestionTopic">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Topic" EntitySet="Topics" />
+          </AssociationSet>
+          <AssociationSet Name="UserRole" Association="Self.UserRole">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuizVisualiserDatabaseModelStoreContainer" CdmEntityContainer="QuizVisualiserDatabaseEntities">
+          <EntitySetMapping Name="Modules">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Module">
+              <MappingFragment StoreEntitySet="Module">
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
+                <ScalarProperty Name="moduleName" ColumnName="moduleName" />
+                <ScalarProperty Name="archived" ColumnName="archived" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModuleUserRoles">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.ModuleUserRole">
+              <MappingFragment StoreEntitySet="ModuleUserRole">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="qText" ColumnName="qText" />
+                <ScalarProperty Name="qCorrectAnswer" ColumnName="qCorrectAnswer" />
+                <ScalarProperty Name="qDistractor1" ColumnName="qDistractor1" />
+                <ScalarProperty Name="qDistractor2" ColumnName="qDistractor2" />
+                <ScalarProperty Name="qDistractor3" ColumnName="qDistractor3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tests">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="TestID" ColumnName="TestID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="testTitle" ColumnName="testTitle" />
+                <ScalarProperty Name="testType" ColumnName="testType" />
+                <ScalarProperty Name="totalAttempts" ColumnName="totalAttempts" />
+                <ScalarProperty Name="uniqueAttempts" ColumnName="uniqueAttempts" />
+                <ScalarProperty Name="averageMark" ColumnName="averageMark" />
+                <ScalarProperty Name="testDate" ColumnName="testDate" />
+                <ScalarProperty Name="uploadDate" ColumnName="uploadDate" />
+                <ScalarProperty Name="assessor" ColumnName="assessor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestQuestions">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.TestQuestion">
+              <MappingFragment StoreEntitySet="TestQuestion">
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="TestID" ColumnName="TestID" />
+                <ScalarProperty Name="correctSelected" ColumnName="correctSelected" />
+                <ScalarProperty Name="qD1Selected" ColumnName="qD1Selected" />
+                <ScalarProperty Name="qD2Selected" ColumnName="qD2Selected" />
+                <ScalarProperty Name="qD3Selected" ColumnName="qD3Selected" />
+                <ScalarProperty Name="markAllocation" ColumnName="markAllocation" />
+                <ScalarProperty Name="difficultyIndex" ColumnName="difficultyIndex" />
+                <ScalarProperty Name="discriminationIndex" ColumnName="discriminationIndex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topics">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Topic">
+              <MappingFragment StoreEntitySet="Topic">
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="topicName" ColumnName="topicName" />
+                <ScalarProperty Name="topicDescription" ColumnName="topicDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="userFirstName" ColumnName="userFirstName" />
+                <ScalarProperty Name="userLastName" ColumnName="userLastName" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ModuleTopic" TypeName="QuizVisualiserDatabaseModel.ModuleTopic" StoreEntitySet="ModuleTopic">
+            <EndProperty Name="Module">
+              <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+            </EndProperty>
+            <EndProperty Name="Topic">
+              <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="QuestionTopic" TypeName="QuizVisualiserDatabaseModel.QuestionTopic" StoreEntitySet="QuestionTopic">
+            <EndProperty Name="Question">
+              <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+            </EndProperty>
+            <EndProperty Name="Topic">
+              <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserRole" TypeName="QuizVisualiserDatabaseModel.UserRole" StoreEntitySet="UserRole">
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

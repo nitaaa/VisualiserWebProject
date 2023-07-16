@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="QuizVisualiserDatabaseModelStoreContainer" CdmEntityContainer="QuizVisualiserDatabaseEntities">
+    <EntitySetMapping Name="Modules">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Module">
+        <MappingFragment StoreEntitySet="Module">
+          <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
+          <ScalarProperty Name="moduleName" ColumnName="moduleName" />
+          <ScalarProperty Name="archived" ColumnName="archived" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ModuleUserRoles">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.ModuleUserRole">
+        <MappingFragment StoreEntitySet="ModuleUserRole">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Question">
+        <MappingFragment StoreEntitySet="Question">
+          <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+          <ScalarProperty Name="qText" ColumnName="qText" />
+          <ScalarProperty Name="qCorrectAnswer" ColumnName="qCorrectAnswer" />
+          <ScalarProperty Name="qDistractor1" ColumnName="qDistractor1" />
+          <ScalarProperty Name="qDistractor2" ColumnName="qDistractor2" />
+          <ScalarProperty Name="qDistractor3" ColumnName="qDistractor3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Role">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tests">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Test">
+        <MappingFragment StoreEntitySet="Test">
+          <ScalarProperty Name="TestID" ColumnName="TestID" />
+          <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+          <ScalarProperty Name="testTitle" ColumnName="testTitle" />
+          <ScalarProperty Name="testType" ColumnName="testType" />
+          <ScalarProperty Name="totalAttempts" ColumnName="totalAttempts" />
+          <ScalarProperty Name="uniqueAttempts" ColumnName="uniqueAttempts" />
+          <ScalarProperty Name="averageMark" ColumnName="averageMark" />
+          <ScalarProperty Name="testDate" ColumnName="testDate" />
+          <ScalarProperty Name="uploadDate" ColumnName="uploadDate" />
+          <ScalarProperty Name="assessor" ColumnName="assessor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TestQuestions">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.TestQuestion">
+        <MappingFragment StoreEntitySet="TestQuestion">
+          <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+          <ScalarProperty Name="TestID" ColumnName="TestID" />
+          <ScalarProperty Name="correctSelected" ColumnName="correctSelected" />
+          <ScalarProperty Name="qD1Selected" ColumnName="qD1Selected" />
+          <ScalarProperty Name="qD2Selected" ColumnName="qD2Selected" />
+          <ScalarProperty Name="qD3Selected" ColumnName="qD3Selected" />
+          <ScalarProperty Name="markAllocation" ColumnName="markAllocation" />
+          <ScalarProperty Name="difficultyIndex" ColumnName="difficultyIndex" />
+          <ScalarProperty Name="discriminationIndex" ColumnName="discriminationIndex" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Topics">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.Topic">
+        <MappingFragment StoreEntitySet="Topic">
+          <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+          <ScalarProperty Name="topicName" ColumnName="topicName" />
+          <ScalarProperty Name="topicDescription" ColumnName="topicDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="QuizVisualiserDatabaseModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="userFirstName" ColumnName="userFirstName" />
+          <ScalarProperty Name="userLastName" ColumnName="userLastName" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="salt" ColumnName="salt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ModuleTopic" TypeName="QuizVisualiserDatabaseModel.ModuleTopic" StoreEntitySet="ModuleTopic">
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+      </EndProperty>
+      <EndProperty Name="Topic">
+        <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="QuestionTopic" TypeName="QuizVisualiserDatabaseModel.QuestionTopic" StoreEntitySet="QuestionTopic">
+      <EndProperty Name="Question">
+        <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+      </EndProperty>
+      <EndProperty Name="Topic">
+        <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserRole" TypeName="QuizVisualiserDatabaseModel.UserRole" StoreEntitySet="UserRole">
+      <EndProperty Name="Roles">
+        <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserID" ColumnName="UserID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

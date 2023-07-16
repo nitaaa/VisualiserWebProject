@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="23e8979e864d4eb1875443c5cd003161" Name="Diagram1" ZoomLevel="83">
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.Module" Width="1.5" PointX="7.375" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.ModuleUserRole" Width="1.5" PointX="3.125" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.Question" Width="1.5" PointX="13" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.Role" Width="1.5" PointX="1.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.Test" Width="1.5" PointX="7.5" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.TestQuestion" Width="1.5" PointX="10.625" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.Topic" Width="1.5" PointX="10.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuizVisualiserDatabaseModel.User" Width="1.5" PointX="4.5" PointY="10.125" IsExpanded="true" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__ModuleUse__Modul__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__Test__ModuleID__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK_Module_User" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__ModuleUse__RoleI__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__ModuleUse__UserI__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__TestQuest__Quest__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__Test__assessor__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.FK__TestQuest__TestI__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.ModuleTopic" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.QuestionTopic" ManuallyRouted="false" />
+        <AssociationConnector Association="QuizVisualiserDatabaseModel.UserRole" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
