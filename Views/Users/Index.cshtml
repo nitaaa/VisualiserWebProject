@@ -23,12 +23,6 @@
         <th>
             @Html.DisplayNameFor(model => model.emailAddress)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.salt)
-        </th>
         <th></th>
     </tr>
 
@@ -45,12 +39,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.emailAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.salt)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
