@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/VisualiserWebProject/v17/.suo
+/bin/VisualiserWebProject.dll
+/.vs/VisualiserWebProject/v17/.suo
