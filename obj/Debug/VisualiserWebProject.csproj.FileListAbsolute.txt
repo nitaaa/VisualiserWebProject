@@ -81,3 +81,7 @@ D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\obj\Debug\V
 D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\obj\Debug\VisualiserWebProject.csproj.CopyComplete
 D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\obj\Debug\VisualiserWebProject.dll
 D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\obj\Debug\VisualiserWebProject.pdb
+D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\bin\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\bin\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\bin\Microsoft.AspNetCore.Cryptography.Internal.xml
+D:\2023 NMU\Honours Project\04 - Implementation\VisualiserWebProject\bin\Microsoft.AspNetCore.Cryptography.KeyDerivation.xml

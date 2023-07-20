@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
@@ -24,12 +25,14 @@ namespace VisualiserWebProject.Controllers
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
 
         // GET: Users
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Users.ToList());
         }
 
         // GET: Users/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -45,6 +48,7 @@ namespace VisualiserWebProject.Controllers
         }
 
         // GET: Users/Register
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -58,13 +62,13 @@ namespace VisualiserWebProject.Controllers
         public ActionResult Register([Bind(Include = "userFirstName,userLastName,title,emailAddress,password")] User user)
         {
             //TODO: CREATE SALT AND HASH PASSWORD
-            string salt = createSalt();
-            byte[] saltByteArray = Encoding.Default.GetBytes(salt);
+            user.salt = createSalt();
+            byte[] saltByteArray = Encoding.Default.GetBytes(user.salt);
 
             //https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-7.0
             //https://andrewlock.net/exploring-the-asp-net-core-identity-passwordhasher/
             user.password = Convert.ToBase64String(KeyDerivation.Pbkdf2(user.password, saltByteArray, KeyDerivationPrf.HMACSHA256, 100000, 256 / 8));
-            user.salt = salt;
+            
 
             if (ModelState.IsValid)
             {
@@ -93,6 +97,7 @@ namespace VisualiserWebProject.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -114,6 +119,9 @@ namespace VisualiserWebProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserID,userFirstName,userLastName,title,emailAddress,password,salt")] User user)
         {
+            byte[] saltByteArray = Encoding.Default.GetBytes(user.salt);
+            user.password = Convert.ToBase64String(KeyDerivation.Pbkdf2(user.password, saltByteArray, KeyDerivationPrf.HMACSHA256, 100000, 256 / 8));
+
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
@@ -124,6 +132,7 @@ namespace VisualiserWebProject.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -190,7 +199,7 @@ namespace VisualiserWebProject.Controllers
             }
         }
 
-        /*User validation
+        /*User validation - Checking that the users email and password match stored values
          */
         private bool ValidateUser(string email, string password)
         {
