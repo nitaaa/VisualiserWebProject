@@ -32,14 +32,14 @@ namespace VisualiserWebProject.Controllers
         public ActionResult AddNewTest(object sender)
         {
             //retrieve file from form
-            var File = this.Request.Files["testReport"];
+            HttpPostedFileBase inputFile = this.Request.Files["testReport"];
             //TODO: save file to temporary storage (but how)
 
 
             return View();
         }
 
-        public void ReadTestFile(String filePath)
+        public void ReadTestFile(HttpPostedFileBase inputFile) //String filePath
         {
             int nrRows, nrColumns, curRow,grade;
             int columnNumber = 0;
@@ -47,14 +47,14 @@ namespace VisualiserWebProject.Controllers
             List<TestFileHelper> testReport = new List<TestFileHelper>();
 
             //Using the Excel Data Reader Package
-            using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+            using (var stream = inputFile.InputStream) //System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
                 // Auto-detect format, supports:
                 //  - Binary Excel files (2.0-2003 format; *.xls)
                 //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
                 using (var reader = ExcelReaderFactory.CreateReader(stream, new ExcelReaderConfiguration()
                 {
-                    AutodetectSeparators = new char[] {'|'}
+                    AutodetectSeparators = new char[] { '|' }
                 }))
                 {
                     //TODO: testing, this is assumed functionality
