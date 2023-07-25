@@ -30,6 +30,7 @@ namespace VisualiserWebProject.Models
         {
             public string Question;
             public string Response;
+            public bool correct;
         }
 
 

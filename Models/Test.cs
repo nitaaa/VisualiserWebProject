@@ -29,6 +29,7 @@ namespace VisualiserWebProject.Models
         public Nullable<System.DateTime> testDate { get; set; }
         public System.DateTime uploadDate { get; set; }
         public int assessor { get; set; }
+        public int testMark { get; set; } //i dont know why i added this?
     
         public virtual Module Module { get; set; }
         public virtual User User { get; set; }

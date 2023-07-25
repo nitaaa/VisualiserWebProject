@@ -10,15 +10,25 @@
 <body>
     <!-- Sidebar -->
     <div class="sidenav accent col-sm-2 ">
-        <table>
-            <tr><td><img src="~/Content/Images/icons8-home-16.png" alt="Home"/></td><td>@Html.ActionLink("User Account", "Index", "Home")</td></tr>
-            <tr><td>@Html.ActionLink("Home", "Index", "Home")</td></tr>
-            <tr><td>@Html.ActionLink("About", "About", "Home")</td></tr>
-            <tr><td>@Html.ActionLink("Contact", "Contact", "Home")</td></tr>
-            <tr><td>@Html.ActionLink("Register", "Register", "Users")</td></tr>
-            <tr><td>@Html.ActionLink("Login", "Login", "Users")</td></tr>
-            <tr><td>@Html.ActionLink("Create Account", "Create", "Users")</td></tr>
-            <tr><td>@Html.ActionLink("Create Account", "Create", "Users")</td></tr>
+
+        
+        <table width="100%">
+            <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/Icons/icons8-home-16.png" alt="Home Icon" /></td><td class="text-right">Home</td></tr>
+            <tr onclick="location.href='@Url.Action("About","Home")'"><td><img src="~/Content/Images/Icons/icons8-about-16.png" alt="About Icon" /></td><td class="text-right">About</td></tr>
+            <tr onclick="location.href='@Url.Action("Register", "Users")'"><td><img src="~/Content/Images/Icons/icons8-register-16.png" alt="Register Icon" /></td><td class="text-right">Register</td></tr>
+            <tr onclick="location.href='@Url.Action("Login", "Users")'" class="bottom-border-divider"><td><img src="~/Content/Images/Icons/icons8-log-in-16.png" alt="Home" /></td><td class="text-right">Log In</td></tr>
+
+            @* Below is only visible when the user logs in. *@
+            @* TODO: User Account *@
+            @* TODO: Home/My Dashboard *@
+            @* TODO: Modules *@
+            @* TODO: Tests *@
+            @* TODO: Questions *@
+            @* TODO: Settings - Different based on user roles *@
+            <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/icons8-home-16.png" alt="Home" /></td><td class="text-right">My Dashboard</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/icons8-home-16.png" alt="Home" /></td><td class="text-right">All Users (Testing)</td></tr>
+            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/settings (2).png" alt="Home" /></td><td class="text-right">New Role</td></tr>
+
         </table>
 
     </div>

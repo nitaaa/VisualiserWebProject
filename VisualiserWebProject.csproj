@@ -212,7 +212,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\icons8-home-16.png" />
+    <Content Include="Content\Images\Icons\binders.png" />
+    <Content Include="Content\Images\Icons\icons8-about-16.png" />
+    <Content Include="Content\Images\Icons\icons8-home-16.png" />
+    <Content Include="Content\Images\Icons\icons8-log-in-16.png" />
+    <Content Include="Content\Images\Icons\icons8-register-16.png" />
+    <Content Include="Content\Images\Icons\option.png" />
+    <Content Include="Content\Images\Icons\settings.png" />
+    <Content Include="Content\Images\Icons\user.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -261,7 +268,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Users\Register.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
@@ -276,6 +282,7 @@
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Users\Login.cshtml" />
+    <Content Include="Views\Main\AddNewTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
