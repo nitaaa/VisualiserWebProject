@@ -25,9 +25,12 @@
             @* TODO: Tests *@
             @* TODO: Questions *@
             @* TODO: Settings - Different based on user roles *@
-            <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/icons8-home-16.png" alt="Home" /></td><td class="text-right">My Dashboard</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/icons8-home-16.png" alt="Home" /></td><td class="text-right">All Users (Testing)</td></tr>
-            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/settings (2).png" alt="Home" /></td><td class="text-right">New Role</td></tr>
+            <tr onclick="location.href='@Url.Action("Dashboard","Main")'"><td><img src="~/Content/Images/Icons/dashboard.png" style="max-width: 16px"/></td><td class="text-right">My Dashboard</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/Icons/user.png" style="max-width: 16px"/></td><td class="text-right">All Users</td></tr>
+            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/id-badge.png" style="max-width: 16px"/></td><td class="text-right">New Role</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Tests")'"><td><img src="~/Content/Images/Icons/checklist.png" style="max-width: 16px"/></td><td class="text-right">All Tests</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Questions")'"><td><img src="~/Content/Images/Icons/option.png" style="max-width: 16px"></td><td class="text-right">All Questions</td></tr>
+
 
         </table>
 

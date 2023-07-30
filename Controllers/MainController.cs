@@ -1,5 +1,6 @@
 ﻿
 using ExcelDataReader;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -126,5 +127,36 @@ namespace VisualiserWebProject.Controllers
 
         //Count LOC REGEX: ^(?!(\s*\*))(?!(\s*\-\-\>))(?!(\s*\<\!\-\-))(?!(\s*\n))(?!(\s*\*\/))(?!(\s*\/\*))(?!(\s*\/\/\/))(?!(\s*\/\/))(?!(\s*\}))(?!(\s*\{))(?!(\s(using))).*$
         //https://stackoverflow.com/questions/1244729/how-do-you-count-the-lines-of-code-in-a-visual-studio-solution
+
+        //Assign Module to Lecturer
+        // GET: Main/AssignModule
+        public ActionResult AssignModule()
+        {
+            //getting the full names of each user to assign a module to
+            db.Configuration.ProxyCreationEnabled = false;
+            List<SelectListItem> userNames = new List<SelectListItem>();
+            foreach (User u in db.Users)
+            {
+                SelectListItem item = new SelectListItem();
+                item.Value = u.UserID.ToString();
+                item.Text = u.userFirstName + " " + u.userLastName;
+                userNames.Add(item);
+            }
+            //viewbag for the dropdown lists
+            ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
+            ViewBag.assessor = new SelectList(userNames,"Value","Text");
+            return View();
+        }
+
+        // Post: Main/AssignModule
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignModule(object sender)
+        {
+            //TODO: Assign module to user -> change the test.assessor to new user
+            //add option to remove current lecturer
+
+            return View();
+        }
     }
 }

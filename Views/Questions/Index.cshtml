@@ -1,0 +1,57 @@
+﻿@model IEnumerable<VisualiserWebProject.Models.Question>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.qText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qCorrectAnswer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qDistractor1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qDistractor2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qDistractor3)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.qText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qCorrectAnswer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qDistractor1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qDistractor2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qDistractor3)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.QuestionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.QuestionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.QuestionID })
+        </td>
+    </tr>
+}
+
+</table>
