@@ -1,0 +1,56 @@
+﻿@model VisualiserWebProject.Models.Module
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Module</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.moduleCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.moduleCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.moduleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.moduleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.archived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.archived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.userFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.userFirstName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -31,16 +31,17 @@ namespace VisualiserWebProject.Models
         //Annotation - Display Name, Required and error message, String length
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please enter your first name.", AllowEmptyStrings = false)]
-        [StringLength(50)]
+        [StringLength(225)]
         public string userFirstName { get; set; }
         //Annotation - Display Name, Required and error message, String length
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Please enter your last name.", AllowEmptyStrings = false)]
-        [StringLength(50)]
+        [StringLength(225)]
         public string userLastName { get; set; }
+
         //Annotation - Display Name, string length
         [Display(Name = "Title")]
-        [StringLength(50)]
+        [StringLength(225)]
         public string title { get; set; }
 
         //Annotation - Display Name, Required, email address Regex 

@@ -184,7 +184,7 @@ namespace VisualiserWebProject.Controllers
             {
                 if (ValidateUser(user.emailAddress, user.password))
                 {
-                    FormsAuthentication.SetAuthCookie(user.emailAddress, true);
+                    FormsAuthentication.SetAuthCookie(user.emailAddress, true);                    
                     return RedirectToAction("Index");
                 }
                 else
@@ -227,7 +227,10 @@ namespace VisualiserWebProject.Controllers
                 string _password = Convert.ToBase64String(KeyDerivation.Pbkdf2(password, saltByteArray, KeyDerivationPrf.HMACSHA256, 100000, 256 / 8));
                 if (curUser.password == _password)
                 {
+                    //Found user with correct password
                     flag = true;
+                    //Set user cookie - for use with tests
+                    Response.Cookies.Add(SetUserCookie(curUser.UserID.ToString()));
                     break;
                 }
             }
@@ -237,12 +240,22 @@ namespace VisualiserWebProject.Controllers
             return flag;
         }
 
+        //Setting up cookies https://www.c-sharpcorner.com/UploadFile/annathurai/cookies-in-Asp-Net/
+        public HttpCookie SetUserCookie(string userID)
+        {
+            HttpCookie UID = new HttpCookie("userID");
+            UID.Value = userID;
+            return UID;
+        }
+
         /*Logging out of the web application
          */
+        [Authorize]
         public ActionResult Logout()
         {
+            //Sign user out and clear current sessions cookies
             FormsAuthentication.SignOut();
-
+            Response.Cookies.Clear();
             return RedirectToAction("Index", "Home");
         }
     }

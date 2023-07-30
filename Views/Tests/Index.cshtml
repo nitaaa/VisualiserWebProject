@@ -1,0 +1,81 @@
+﻿@model IEnumerable<VisualiserWebProject.Models.Test>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.testTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.testType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.totalAttempts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uniqueAttempts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.averageMark)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.testDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uploadDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Module.moduleCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.userFirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.testTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.testType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalAttempts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uniqueAttempts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.averageMark)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.testDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uploadDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Module.moduleCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.userFirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TestID })
+        </td>
+    </tr>
+}
+
+</table>

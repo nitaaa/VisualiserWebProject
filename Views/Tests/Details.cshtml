@@ -1,0 +1,90 @@
+﻿@model VisualiserWebProject.Models.Test
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Test</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.testTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.testTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.testType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.testType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalAttempts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalAttempts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uniqueAttempts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uniqueAttempts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.averageMark)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.averageMark)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.testDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.testDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uploadDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uploadDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Module.moduleCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Module.moduleCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.userFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.userFirstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TestID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

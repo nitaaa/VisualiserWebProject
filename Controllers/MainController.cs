@@ -11,10 +11,12 @@ using static VisualiserWebProject.Models.TestFileHelper;
 
 namespace VisualiserWebProject.Controllers
 {
+    [Authorize]
     public class MainController : Controller
     {
+        private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
+
         // GET: Main
-        //[Authorize]
         public ActionResult Dashboard()
         {
             return View();
@@ -23,17 +25,18 @@ namespace VisualiserWebProject.Controllers
         // GET: Main/AddNewTest
         public ActionResult AddNewTest()
         {
+            ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
+            ViewBag.assessor = new SelectList(db.Users, "UserID", "userFirstName");
             return View();
         }
 
         // Post: Main/AddNewTest
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNewTest(object sender)
+        public ActionResult AddNewTest([Bind(Include = "ModuleID,testTitle,testType,testDate")] Test test)
         {
             //retrieve file from form
             HttpPostedFileBase inputFile = this.Request.Files["testReport"];
-            //TODO: save file to temporary storage (but how)
 
 
             return View();
@@ -120,5 +123,8 @@ namespace VisualiserWebProject.Controllers
 
             //TODO: Create new Question object then add to DB
         }
+
+        //Count LOC REGEX: ^(?!(\s*\*))(?!(\s*\-\-\>))(?!(\s*\<\!\-\-))(?!(\s*\n))(?!(\s*\*\/))(?!(\s*\/\*))(?!(\s*\/\/\/))(?!(\s*\/\/))(?!(\s*\}))(?!(\s*\{))(?!(\s(using))).*$
+        //https://stackoverflow.com/questions/1244729/how-do-you-count-the-lines-of-code-in-a-visual-studio-solution
     }
 }
