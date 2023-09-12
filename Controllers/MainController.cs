@@ -16,6 +16,7 @@ namespace VisualiserWebProject.Controllers
     public class MainController : Controller
     {
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
+        private int maxMark = 0;
 
         // GET: Main
         public ActionResult Dashboard()
@@ -39,13 +40,25 @@ namespace VisualiserWebProject.Controllers
             //retrieve file from form
             HttpPostedFileBase inputFile = this.Request.Files["testReport"];
 
+            //TODO: Data Cleaning - unique attempts, each question and relating answers
 
-            return View();
+            //TODO: ITEM ANALYSIS - average mark, indices - separate method
+
+            //TODO: Create new Test object then add to DB
+            //TODO: Error if maxmark is <=0
+
+            test.uniqueAttempts = 0;
+            test.testMark = 0;
+
+
+            //db.Tests.Add(test);
+            //db.SaveChanges();
+            return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
 
-        public void ReadTestFile(HttpPostedFileBase inputFile) //String filePath
+        public List<TestFileHelper> ReadTestFile(HttpPostedFileBase inputFile) //String filePath
         {
-            int nrRows, nrColumns, curRow,grade;
+            int nrRows, nrColumns, curRow;
             int columnNumber = 0;
             List<string> columns = new List<string>();
             List<TestFileHelper> testReport = new List<TestFileHelper>();
@@ -94,26 +107,33 @@ namespace VisualiserWebProject.Controllers
                                 columnNumber++;
                                 testline.Mark = reader.GetString(columnNumber);
                                 columnNumber++;
-                                //for the remainder of the columns, the format will be |Question n|Response n|
+                                //for the remainder of the columns, the format will be
+                                //|Question n|Student Response n|Correct Response n|
                                 while (columnNumber <= nrColumns)
                                 {
                                     QuestionResponseFileHelper qrsf = new QuestionResponseFileHelper();
                                     qrsf.Question = reader.GetString(columnNumber);
                                     columnNumber++;
-                                    qrsf.Response = reader.GetString(columnNumber);
+                                    qrsf.StudentResponse = reader.GetString(columnNumber);
                                     columnNumber++;
-                                    //TODO: Check if response is correct - part of item analysis
+                                    qrsf.CorrectResponse = reader.GetString(columnNumber);
+                                    columnNumber++;
+                                    qrsf.setAnswers(); //Data Cleaning
                                     testline.QuestionResult.Add(qrsf);
                                 }
                                 testReport.Add(testline);
-                            } else grade = int.Parse(reader.GetString(9).Split('/')[2]);
+                            }
+                            else maxMark = int.Parse(reader.GetString(9).Split('/')[2]);
                         }
                     } while (reader.NextResult());
 
-                    //TODO: Create new Test object then add to DB
-
                 }
             }
+
+            //TODO: Show file lines
+
+            return testReport;
+
         }
 
         public void ReadQuestionFile(string filePath)

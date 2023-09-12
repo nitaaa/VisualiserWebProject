@@ -39,7 +39,17 @@ namespace VisualiserWebProject.Controllers
         // GET: Modules/Create
         public ActionResult Create()
         {
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "userFirstName");
+            //getting the full name of the user
+            db.Configuration.ProxyCreationEnabled = false;
+            List<SelectListItem> userNames = new List<SelectListItem>();
+            foreach (User u in db.Users)
+            {
+                SelectListItem item = new SelectListItem();
+                item.Value = u.UserID.ToString();
+                item.Text = u.userFirstName + " " + u.userLastName;
+                userNames.Add(item);
+            }
+            ViewBag.UserID = new SelectList(userNames, "Value", "Text");
             return View();
         }
 
@@ -48,8 +58,9 @@ namespace VisualiserWebProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ModuleID,UserID,moduleCode,moduleName,archived")] Module module)
+        public ActionResult Create([Bind(Include = "ModuleID,UserID,moduleCode,moduleName")] Module module)
         {
+            module.archived = false;
             if (ModelState.IsValid)
             {
                 db.Modules.Add(module);

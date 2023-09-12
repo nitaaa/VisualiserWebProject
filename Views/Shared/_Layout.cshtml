@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,7 +17,8 @@
             <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/Icons/icons8-home-16.png" alt="Home Icon" /></td><td class="text-right">Home</td></tr>
             <tr onclick="location.href='@Url.Action("About","Home")'"><td><img src="~/Content/Images/Icons/icons8-about-16.png" alt="About Icon" /></td><td class="text-right">About</td></tr>
             <tr onclick="location.href='@Url.Action("Register", "Users")'"><td><img src="~/Content/Images/Icons/icons8-register-16.png" alt="Register Icon" /></td><td class="text-right">Register</td></tr>
-            <tr onclick="location.href='@Url.Action("Login", "Users")'" class="bottom-border-divider"><td><img src="~/Content/Images/Icons/icons8-log-in-16.png" alt="Home" /></td><td class="text-right">Log In</td></tr>
+            <tr onclick="location.href='@Url.Action("Login", "Users")'"><td><img src="~/Content/Images/Icons/log-in.png" alt="Log In Icon" style="max-width: 16px" /></td><td class="text-right">Log In</td></tr>
+            <tr onclick="location.href='@Url.Action("Logout", "Users")'" class="bottom-border-divider"><td><img src="~/Content/Images/Icons/logout.png" alt="Log Out Icon" style="max-width: 16px" /></td><td class="text-right">Log Out</td></tr>
 
             @* Below is only visible when the user logs in. *@
             @* TODO: User Account *@
@@ -25,11 +27,12 @@
             @* TODO: Tests *@
             @* TODO: Questions *@
             @* TODO: Settings - Different based on user roles *@
-            <tr onclick="location.href='@Url.Action("Dashboard","Main")'"><td><img src="~/Content/Images/Icons/dashboard.png" style="max-width: 16px"/></td><td class="text-right">My Dashboard</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/Icons/user.png" style="max-width: 16px"/></td><td class="text-right">All Users</td></tr>
-            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/id-badge.png" style="max-width: 16px"/></td><td class="text-right">New Role</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Tests")'"><td><img src="~/Content/Images/Icons/checklist.png" style="max-width: 16px"/></td><td class="text-right">All Tests</td></tr>
+            <tr onclick="location.href='@Url.Action("Dashboard","Main")'"><td><img src="~/Content/Images/Icons/dashboard.png" style="max-width: 16px" /></td><td class="text-right">My Dashboard</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/Icons/user.png" style="max-width: 16px" /></td><td class="text-right">All Users</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Modules")'"><td><img src="~/Content/Images/Icons/binders.png" style="max-width: 16px" /></td><td class="text-right">All Modules</td></tr>
+            <tr onclick="location.href='@Url.Action("Index", "Tests")'"><td><img src="~/Content/Images/Icons/checklist.png" style="max-width: 16px" /></td><td class="text-right">All Tests</td></tr>
             <tr onclick="location.href='@Url.Action("Index", "Questions")'"><td><img src="~/Content/Images/Icons/option.png" style="max-width: 16px"></td><td class="text-right">All Questions</td></tr>
+            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/id-badge.png" style="max-width: 16px" /></td><td class="text-right">New Role</td></tr>
 
 
         </table>

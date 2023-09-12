@@ -11,7 +11,8 @@ namespace VisualiserWebProject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Module
     {
         public Module()
@@ -23,8 +24,18 @@ namespace VisualiserWebProject.Models
     
         public int ModuleID { get; set; }
         public Nullable<int> UserID { get; set; }
+
+        [Display(Name = "Module Code:")]
+        [Required(ErrorMessage = "Please enter the module code.", AllowEmptyStrings = false)]
+        [StringLength(255)]
         public string moduleCode { get; set; }
+
+        [Display(Name = "Module Name:")]
+        [Required(ErrorMessage = "Please enter the module name.", AllowEmptyStrings = false)]
+        [StringLength(255)]
         public string moduleName { get; set; }
+
+        [Display(Name = "Archive Module")]
         public Nullable<bool> archived { get; set; }
     
         public virtual ICollection<ModuleUserRole> ModuleUserRoles { get; set; }

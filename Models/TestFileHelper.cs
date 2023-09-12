@@ -29,8 +29,24 @@ namespace VisualiserWebProject.Models
         public class QuestionResponseFileHelper
         {
             public string Question;
-            public string Response;
-            public bool correct;
+            public string StudentResponse;
+            public string CorrectResponse;
+
+            public string QuestionText;
+            public string[] Answers;
+
+            public bool isCorrect()
+            {
+                return (StudentResponse.Equals(CorrectResponse));
+            }
+
+            public void setAnswers()
+            {
+                string[] temp = Question.Split(':');
+                QuestionText = temp[0];
+                Answers = temp[1].Split(';');
+                //TODO: Throw error if more than 4 options in Answers
+            }
         }
 
 
