@@ -1,12 +1,18 @@
 ﻿
 using ExcelDataReader;
+using NPOI.HSSF.Record;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using VisualiserWebProject.Models;
 using static VisualiserWebProject.Models.TestFileHelper;
 
@@ -16,6 +22,7 @@ namespace VisualiserWebProject.Controllers
     public class MainController : Controller
     {
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
+        List<TestFileHelper> currentFile = new List<TestFileHelper>();  
         private int maxMark = 0;
 
         // GET: Main
@@ -27,8 +34,11 @@ namespace VisualiserWebProject.Controllers
         // GET: Main/AddNewTest
         public ActionResult AddNewTest()
         {
+            ViewData["TestReport"] = currentFile;
+
             ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
             ViewBag.assessor = new SelectList(db.Users, "UserID", "userFirstName");
+
             return View();
         }
 
@@ -37,9 +47,12 @@ namespace VisualiserWebProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNewTest([Bind(Include = "ModuleID,testTitle,testType,testDate")] Test test)
         {
+            if (Request.Files.Count < 1)
+            {
+                throw new ArgumentNullException("No File Specified");
+            }
             //retrieve file from form
-            HttpPostedFileBase inputFile = this.Request.Files["testReport"];
-
+            currentFile = ReadTestFile(Request.Files[0]);
             //TODO: Data Cleaning - unique attempts, each question and relating answers
 
             //TODO: ITEM ANALYSIS - average mark, indices - separate method
@@ -53,8 +66,38 @@ namespace VisualiserWebProject.Controllers
 
             //db.Tests.Add(test);
             //db.SaveChanges();
-            return RedirectToAction("Dashboard"); //TODO: Update to correct page
+
+            Table table = new Table();
+            TableHeaderRow headerRow = new TableHeaderRow();
+            TableCell cell = new TableCell();
+            cell.Text = "Surname";
+            headerRow.Cells.Add(cell);
+            cell.Text = "Mark";
+            headerRow.Cells.Add(cell);
+            cell.Text = "Number of Questions";
+            headerRow.Cells.Add(cell);
+            table.Rows.Add(headerRow);
+            TableRow row = new TableRow();
+            foreach (TestFileHelper item in currentFile)
+            {
+                string[] disp =  { item.StudentID, item.Mark, item.QuestionResult.Count.ToString()};
+                TableCell[] cells = new TableCell[disp.Length];
+                for (int i = 0; i < disp.Length; i++)
+                {
+                    cells[i] = new TableCell();
+                    cells[i].Text = disp[i].ToString();
+                }
+                row.Cells.AddRange(cells);
+                table.Rows.Add(row);
+            }
+
+            
+            //test from here
+            ViewBag.Table = table;
+
+            return Content("File Sumitted"); 
         }
+
 
         public List<TestFileHelper> ReadTestFile(HttpPostedFileBase inputFile) //String filePath
         {
@@ -64,7 +107,8 @@ namespace VisualiserWebProject.Controllers
             List<TestFileHelper> testReport = new List<TestFileHelper>();
 
             //Using the Excel Data Reader Package
-            using (var stream = inputFile.InputStream) //System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+            //FileStream stream = new FileStream(inputFile.FileName, FileMode.Open,FileAccess.Read);
+            using (Stream stream = inputFile.InputStream) //System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
                 // Auto-detect format, supports:
                 //  - Binary Excel files (2.0-2003 format; *.xls)
@@ -80,11 +124,11 @@ namespace VisualiserWebProject.Controllers
                     {
                         nrRows = reader.RowCount;
                         nrColumns = reader.FieldCount;
-                        columnNumber = 1;
+                        columnNumber = 0;
                         curRow = 0;
                         while (reader.Read())
                         {
-                            if (curRow > 1)
+                            if (curRow > 0)
                             {
                                 TestFileHelper testline = new TestFileHelper();
                                 testline.Surname = reader.GetString(columnNumber);
@@ -109,8 +153,9 @@ namespace VisualiserWebProject.Controllers
                                 columnNumber++;
                                 //for the remainder of the columns, the format will be
                                 //|Question n|Student Response n|Correct Response n|
-                                while (columnNumber <= nrColumns)
+                                while (columnNumber < nrColumns)
                                 {
+                                    testline.QuestionResult = new List<QuestionResponseFileHelper>();
                                     QuestionResponseFileHelper qrsf = new QuestionResponseFileHelper();
                                     qrsf.Question = reader.GetString(columnNumber);
                                     columnNumber++;
@@ -122,8 +167,10 @@ namespace VisualiserWebProject.Controllers
                                     testline.QuestionResult.Add(qrsf);
                                 }
                                 testReport.Add(testline);
+                                columnNumber = 0;
                             }
-                            else maxMark = int.Parse(reader.GetString(9).Split('/')[2]);
+                            else maxMark = int.Parse(reader.GetString(8).Split('/')[1]);
+                            curRow++;
                         }
                     } while (reader.NextResult());
 
@@ -132,13 +179,28 @@ namespace VisualiserWebProject.Controllers
 
             //TODO: Show file lines
 
+
+
+
+
             return testReport;
 
         }
 
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Submit()
+        {
+            
+            //db.Tests.Add(test);
+            //db.SaveChanges();
+            return RedirectToAction("Dashboard"); //TODO: Update to correct page
+        }
+
         public void ReadQuestionFile(string filePath)
         {
-            //TODO: Read Question File (csv most likely - to check with Marinda)
+            //TODO: Read Question File (Respondus word file)
             //TODO: QuestionHelper Model
 
 

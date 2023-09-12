@@ -44,8 +44,14 @@ namespace VisualiserWebProject.Models
             {
                 string[] temp = Question.Split(':');
                 QuestionText = temp[0];
+                Answers = new string[4];
                 Answers = temp[1].Split(';');
                 //TODO: Throw error if more than 4 options in Answers
+            }
+
+            public override string ToString()
+            {
+                return Question;
             }
         }
 
