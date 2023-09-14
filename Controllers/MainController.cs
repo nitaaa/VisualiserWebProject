@@ -14,6 +14,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VisualiserWebProject.Models;
+using static System.Net.Mime.MediaTypeNames;
 using static VisualiserWebProject.Models.TestFileHelper;
 
 namespace VisualiserWebProject.Controllers
@@ -22,8 +23,10 @@ namespace VisualiserWebProject.Controllers
     public class MainController : Controller
     {
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
-        List<TestFileHelper> currentFile = new List<TestFileHelper>();  
-        private int maxMark = 0;
+        private List<TestFileHelper> currentFile;
+        private Test currentTest;
+        private int maxMark;
+        private int nrQuestions;
 
         // GET: Main
         public ActionResult Dashboard()
@@ -52,50 +55,13 @@ namespace VisualiserWebProject.Controllers
                 throw new ArgumentNullException("No File Specified");
             }
             //retrieve file from form
-            currentFile = ReadTestFile(Request.Files[0]);
-            //TODO: Data Cleaning - unique attempts, each question and relating answers
+            TempData["TestReport"] = ReadTestFile(Request.Files[0]);
+            TempData["currentTest"] = test;
+            TempData["maxMark"] = maxMark;
+            TempData["nrQuestions"] = nrQuestions;
+                        
+            return RedirectToAction("ConfirmSubmission");
 
-            //TODO: ITEM ANALYSIS - average mark, indices - separate method
-
-            //TODO: Create new Test object then add to DB
-            //TODO: Error if maxmark is <=0
-
-            test.uniqueAttempts = 0;
-            test.testMark = 0;
-
-
-            //db.Tests.Add(test);
-            //db.SaveChanges();
-
-            Table table = new Table();
-            TableHeaderRow headerRow = new TableHeaderRow();
-            TableCell cell = new TableCell();
-            cell.Text = "Surname";
-            headerRow.Cells.Add(cell);
-            cell.Text = "Mark";
-            headerRow.Cells.Add(cell);
-            cell.Text = "Number of Questions";
-            headerRow.Cells.Add(cell);
-            table.Rows.Add(headerRow);
-            TableRow row = new TableRow();
-            foreach (TestFileHelper item in currentFile)
-            {
-                string[] disp =  { item.StudentID, item.Mark, item.QuestionResult.Count.ToString()};
-                TableCell[] cells = new TableCell[disp.Length];
-                for (int i = 0; i < disp.Length; i++)
-                {
-                    cells[i] = new TableCell();
-                    cells[i].Text = disp[i].ToString();
-                }
-                row.Cells.AddRange(cells);
-                table.Rows.Add(row);
-            }
-
-            
-            //test from here
-            ViewBag.Table = table;
-
-            return Content("File Sumitted"); 
         }
 
 
@@ -151,11 +117,12 @@ namespace VisualiserWebProject.Controllers
                                 columnNumber++;
                                 testline.Mark = reader.GetString(columnNumber);
                                 columnNumber++;
+
+                                testline.QuestionResult = new List<QuestionResponseFileHelper>();
                                 //for the remainder of the columns, the format will be
                                 //|Question n|Student Response n|Correct Response n|
                                 while (columnNumber < nrColumns)
                                 {
-                                    testline.QuestionResult = new List<QuestionResponseFileHelper>();
                                     QuestionResponseFileHelper qrsf = new QuestionResponseFileHelper();
                                     qrsf.Question = reader.GetString(columnNumber);
                                     columnNumber++;
@@ -176,24 +143,49 @@ namespace VisualiserWebProject.Controllers
 
                 }
             }
-
-            //TODO: Show file lines
-
-
-
-
-
+            nrQuestions = testReport.First().QuestionResult.Count;
             return testReport;
 
         }
 
-        
+        // GET: Main/AddNewTest
+        public ActionResult ConfirmSubmission()
+        {
+            //ViewData["TestReport"] = currentFile;
+
+            //ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
+            //ViewBag.assessor = new SelectList(db.Users, "UserID", "userFirstName");
+
+            //put in test info
+            if (TempData.Count < 4)
+            {
+                throw new Exception("Values Not Found");
+            }
+            ViewBag.NumberQuestions = TempData["nrQuestions"];
+            ViewData["TestReport"] = TempData["TestReport"];
+
+            return View();
+        }
+
+        // Post: Main/AddNewTest
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Submit()
+        public ActionResult ConfirmSubmission(object sender)
         {
-            
-            //db.Tests.Add(test);
+            //TODO: Data Cleaning - unique attempts, each question and relating answers
+            //TODO: ITEM ANALYSIS - average mark, indices - separate method
+
+
+
+
+            //TODO: Create new Test object then add to DB
+            //TODO: Error if maxmark is <=0
+
+            currentTest.uniqueAttempts = currentFile.Distinct().Count(); //select distinct based on student ID
+            currentTest.testMark = maxMark;
+
+            //ADDING TO DB
+            //db.Tests.Add(test); //check if this still works
             //db.SaveChanges();
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }

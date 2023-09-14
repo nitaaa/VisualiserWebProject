@@ -5,9 +5,7 @@
 }
 
 <h2>Add New Test</h2>
-@{
-    IEnumerable<VisualiserWebProject.Models.TestFileHelper> testReport = ViewData["TestReport"] as IEnumerable<VisualiserWebProject.Models.TestFileHelper>;
-}
+
 @using (Html.BeginForm("AddNewTest", "Main", FormMethod.Post, new { encType = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -74,31 +72,6 @@
         </div>
     </div>
 
-    <!-- TODO: Insert data grid & Confirm Button -> separate page(?) -->
-
 }
 
 
-<h1>File Preview</h1>
-
-<p>
-    @Html.ActionLink("Submit File", "Submit")
-</p>
-
-<table id="fileViewer" class="table">
-
-    @foreach (VisualiserWebProject.Models.TestFileHelper item in testReport)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mark)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionResult)
-            </td>
-        </tr>
-    }
-</table>

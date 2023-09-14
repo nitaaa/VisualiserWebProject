@@ -306,6 +306,7 @@
     <Content Include="Views\Questions\Edit.cshtml" />
     <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\Main\AssignModule.cshtml" />
+    <Content Include="Views\Main\ConfirmSubmission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

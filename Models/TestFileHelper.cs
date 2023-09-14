@@ -55,6 +55,11 @@ namespace VisualiserWebProject.Models
             }
         }
 
-
+        public override bool Equals(object obj)
+        {
+            if (((TestFileHelper)obj).StudentID == StudentID)
+            return true;
+            else return false;
+        }
     }
 }
