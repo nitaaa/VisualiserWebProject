@@ -5,6 +5,7 @@ using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace VisualiserWebProject.Controllers
         // GET: Main/AddNewTest
         public ActionResult AddNewTest()
         {
-            ViewData["TestReport"] = currentFile;
+            TempData.Clear(); //remove any temp data from previous submission if there is any
 
             ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
             ViewBag.assessor = new SelectList(db.Users, "UserID", "userFirstName");
@@ -170,7 +171,7 @@ namespace VisualiserWebProject.Controllers
         // Post: Main/AddNewTest
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmSubmission(object sender)
+        public ActionResult SubmitFile()
         {
             //TODO: Data Cleaning - unique attempts, each question and relating answers
             //TODO: ITEM ANALYSIS - average mark, indices - separate method
@@ -180,10 +181,19 @@ namespace VisualiserWebProject.Controllers
 
             //TODO: Create new Test object then add to DB
             //TODO: Error if maxmark is <=0
+            currentFile = (List<TestFileHelper>)TempData["TestReport"];
 
+            maxMark = (int)TempData["maxMark"];
+            nrQuestions = (int)TempData["nrQuestions"];
+
+            currentTest = (Test)TempData["currentTest"];
             currentTest.uniqueAttempts = currentFile.Distinct().Count(); //select distinct based on student ID
             currentTest.testMark = maxMark;
+            currentTest.assessor = int.Parse(Request.Cookies["userID"].Value);
 
+            //total attempts
+            //unique attempts
+            //average mark
             //ADDING TO DB
             //db.Tests.Add(test); //check if this still works
             //db.SaveChanges();

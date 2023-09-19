@@ -56,7 +56,7 @@ namespace VisualiserWebProject.Models
 
         //Set in MainController.ReadTestFile
         public int assessor { get; set; }
-        public int testMark { get; set; } //i dont know why i added this?
+        public int testMark { get; set; } //max mark
     
         public virtual Module Module { get; set; }
 
