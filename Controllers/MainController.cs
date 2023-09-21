@@ -233,15 +233,25 @@ namespace VisualiserWebProject.Controllers
                     }
 
                     //check if unique question in test
-                    tq = new TestQuestion(dbQ.QuestionID, testID);
+                    if (!uniqueQuestions.Any(o => o.QuestionID == dbQ.QuestionID))
+                    {
+                        //not unique
+                        tq = new TestQuestion(dbQ.QuestionID, testID);
+                    } else
+                    {
+                        tq = uniqueQuestions.Where(o => o.QuestionID == curQ.QuestionID).FirstOrDefault();
+                    }
+
+                    if (qr.isCorrect())
+                        tq.correctSelected++;
+
+                    //distractor increment
+                    
                 }
                 
 
             }
 
-            //ADDING TO DB
-            //db.Tests.Add(test); //check if this still works
-            //db.SaveChanges();
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
 
@@ -256,6 +266,7 @@ namespace VisualiserWebProject.Controllers
             int ID = db.Tests.LastOrDefault().TestID;
             return ID;
         }
+
         //Add Question To DB
         public Question addQuestionToDB(Question question)
         {
