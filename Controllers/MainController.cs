@@ -17,6 +17,7 @@ using System.Web.UI.WebControls;
 using VisualiserWebProject.Models;
 using static System.Net.Mime.MediaTypeNames;
 using static VisualiserWebProject.Models.TestFileHelper;
+using static VisualiserWebProject.Models.Question;
 
 namespace VisualiserWebProject.Controllers
 {
@@ -165,6 +166,7 @@ namespace VisualiserWebProject.Controllers
             ViewBag.NumberQuestions = TempData["nrQuestions"];
             ViewData["TestReport"] = TempData["TestReport"];
 
+
             return View();
         }
 
@@ -193,20 +195,76 @@ namespace VisualiserWebProject.Controllers
 
             //total attempts
             //unique attempts
+            currentTest.totalAttempts = currentFile.Count();
+            currentTest.uniqueAttempts = currentFile.Distinct().Count();
+
+            int testID = addTestToDB(currentTest);
             //average mark
+            double totalmarks = 0;
+            List<Question> tQuestions = new List<Question>();
+            List<TestQuestion> TestQuestions = new List<TestQuestion>();
+
+            foreach (TestFileHelper line in currentFile)
+            {
+                totalmarks += double.Parse(line.Mark);
+                List<QuestionResponseFileHelper> allQ = line.QuestionResult;
+                List<TestQuestion> uniqueQuestions = new List<TestQuestion>();
+                TestQuestion tq;
+                Question curQ = new Question();
+                Question dbQ;
+                foreach (QuestionResponseFileHelper qr in allQ)
+                {
+                    curQ.qText = qr.QuestionText;
+                    curQ.qCorrectAnswer = qr.CorrectResponse;
+                    string[] dist = qr.getDistractors();
+                    curQ.qDistractor1 = dist[0];
+                    curQ.qDistractor2 = dist[1];
+                    curQ.qDistractor3 = dist[2];
+
+                    //check if new question in DB
+                    if (db.Questions.Any(o => o.Equals(curQ)))
+                    {
+                        //not new question - retrieve from DB
+                        dbQ = db.Questions.Where(o => o.Equals(curQ)).FirstOrDefault();
+                    } else
+                    {
+                        //new question - add to DB
+                        dbQ = addQuestionToDB(curQ);
+                    }
+
+                    //check if unique question in test
+                    tq = new TestQuestion(dbQ.QuestionID, testID);
+                }
+                
+
+            }
+
             //ADDING TO DB
             //db.Tests.Add(test); //check if this still works
             //db.SaveChanges();
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
 
-        public void ReadQuestionFile(string filePath)
+        //Add Test To DB
+        public int addTestToDB(Test test)
         {
-            //TODO: Read Question File (Respondus word file)
-            //TODO: QuestionHelper Model
-
-
-            //TODO: Create new Question object then add to DB
+            if (ModelState.IsValid)
+            {
+                db.Tests.Add(test);
+                db.SaveChanges();
+            }
+            int ID = db.Tests.LastOrDefault().TestID;
+            return ID;
+        }
+        //Add Question To DB
+        public Question addQuestionToDB(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Questions.Add(question);
+                db.SaveChanges();
+            }
+            return db.Questions.Where(o => o.qText == question.qText).LastOrDefault();
         }
 
         //Count LOC REGEX: ^(?!(\s*\*))(?!(\s*\-\-\>))(?!(\s*\<\!\-\-))(?!(\s*\n))(?!(\s*\*\/))(?!(\s*\/\*))(?!(\s*\/\/\/))(?!(\s*\/\/))(?!(\s*\}))(?!(\s*\{))(?!(\s(using))).*$

@@ -177,7 +177,6 @@
     <Compile Include="Models\Question.cs">
       <DependentUpon>VisualiserModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionFileHelper.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>VisualiserModel.tt</DependentUpon>
     </Compile>

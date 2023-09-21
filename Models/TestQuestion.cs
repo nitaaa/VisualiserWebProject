@@ -15,6 +15,12 @@ namespace VisualiserWebProject.Models
     //Questions and answers from a specific test
     public partial class TestQuestion
     {
+        public TestQuestion(int questionID, int testID)
+        {
+            QuestionID = questionID;
+            TestID = testID;
+        }
+
         public int QuestionID { get; set; }
         public int TestID { get; set; }
         //number of times the correct answer was selected

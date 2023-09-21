@@ -49,6 +49,14 @@ namespace VisualiserWebProject.Models
                 //TODO: Throw error if more than 4 options in Answers
             }
 
+            public string[] getDistractors()
+            {
+                List<string> dist = Answers.ToList();
+                dist.Remove(CorrectResponse);
+                
+                return dist.ToArray();
+            }
+
             public override string ToString()
             {
                 return Question;

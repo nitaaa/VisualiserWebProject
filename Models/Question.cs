@@ -51,5 +51,31 @@ namespace VisualiserWebProject.Models
     
         public virtual ICollection<TestQuestion> TestQuestions { get; set; }
         public virtual ICollection<Topic> Topics { get; set; }
+
+        public List<String> AllDistractors;
+
+        private void toList()
+        {
+            AllDistractors = new List<string>();
+            AllDistractors.Add(qDistractor1);
+            AllDistractors.Add(qDistractor2);
+            AllDistractors.Add(qDistractor3);
+        }
+
+        public override bool Equals(object obj)
+        {
+            bool response = true;
+            this.toList();
+            Question q2 = obj as Question;
+            q2.toList();
+            if (qText == q2.qText && qCorrectAnswer == q2.qCorrectAnswer)
+            {
+                foreach (string s in q2.AllDistractors)
+                {
+                    if (!this.AllDistractors.Contains(s)) response = false;
+                }
+            }
+            return response;
+        }
     }
 }

@@ -64,5 +64,12 @@ namespace VisualiserWebProject.Models
         public virtual User User { get; set; }
 
         public virtual ICollection<TestQuestion> TestQuestions { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            bool response = true;
+            
+            return response;
+        }
     }
 }
