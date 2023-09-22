@@ -178,11 +178,6 @@ namespace VisualiserWebProject.Controllers
             //TODO: Data Cleaning - unique attempts, each question and relating answers
             //TODO: ITEM ANALYSIS - average mark, indices - separate method
 
-
-
-
-            //TODO: Create new Test object then add to DB
-            //TODO: Error if maxmark is <=0
             currentFile = (List<TestFileHelper>)TempData["TestReport"];
 
             maxMark = (int)TempData["maxMark"];
@@ -208,7 +203,6 @@ namespace VisualiserWebProject.Controllers
             {
                 totalmarks += double.Parse(line.Mark);
                 List<QuestionResponseFileHelper> allQ = line.QuestionResult;
-                List<TestQuestion> uniqueQuestions = new List<TestQuestion>();
                 TestQuestion tq;
                 Question curQ = new Question();
                 Question dbQ;
@@ -233,25 +227,70 @@ namespace VisualiserWebProject.Controllers
                     }
 
                     //check if unique question in test
-                    if (!uniqueQuestions.Any(o => o.QuestionID == dbQ.QuestionID))
+                    if (!TestQuestions.Any(o => o.QuestionID == dbQ.QuestionID))
                     {
                         //not unique
                         tq = new TestQuestion(dbQ.QuestionID, testID);
+                        TestQuestions.Add(tq); //add to TestQuestions
                     } else
                     {
-                        tq = uniqueQuestions.Where(o => o.QuestionID == curQ.QuestionID).FirstOrDefault();
+                        //exists in TestQuestions
+                        tq = TestQuestions.Where(o => o.QuestionID == curQ.QuestionID).FirstOrDefault();
                     }
 
                     if (qr.isCorrect())
                         tq.correctSelected++;
-
-                    //distractor increment
+                    else
+                    {
+                        //distractor increment
+                        if (qr.StudentResponse == dbQ.qDistractor1)
+                        {
+                            tq.qD1Selected++;
+                        } else if (qr.StudentResponse == dbQ.qDistractor2)
+                        {
+                            tq.qD2Selected++;
+                        } else if (qr.StudentResponse == dbQ.qDistractor3)
+                        {
+                            tq.qD3Selected++;
+                        }
+                    }
                     
-                }
+                } //All Questions for one attempt processed
+            }//all attempts processed
+
+            #region Item Analysis
+            int p27 = (int)Math.Floor(currentTest.totalAttempts * 0.27);
+            List<TestFileHelper> upper27 = new List<TestFileHelper>();
+            List<TestFileHelper> lower27 = new List<TestFileHelper>();
+            List<TestFileHelper> studentResponses = new List<TestFileHelper>(currentFile);
+            studentResponses.OrderByDescending(o => int.Parse(o.Mark));  
+            //get upper 27%
+
+            
+            //get lower 27%
+
+            double averageMark = totalmarks / currentTest.totalAttempts;
+            foreach (TestQuestion testQuestion in TestQuestions)
+            {
+                int questionCount = testQuestion.questionCount();
+                decimal difficultyIndex = testQuestion.correctSelected/questionCount;
+                decimal discriminationIndex = 0;
+
+                //using currentFile to get the top 27% of student and nr correct 
+                //and  ^^^     bottom      ^^^
                 
 
-            }
+                testQuestion.difficultyIndex = difficultyIndex;
+                testQuestion.discriminationIndex = discriminationIndex;
+                testQuestion.markAllocation = 1;
 
+
+                addTestQuestionToDB(testQuestion);
+            }         
+
+            
+
+            #endregion
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
 
@@ -262,6 +301,9 @@ namespace VisualiserWebProject.Controllers
             {
                 db.Tests.Add(test);
                 db.SaveChanges();
+            } else
+            {
+                throw new Exception("Error in Item Analysis, adding Test to database");
             }
             int ID = db.Tests.LastOrDefault().TestID;
             return ID;
@@ -274,8 +316,24 @@ namespace VisualiserWebProject.Controllers
             {
                 db.Questions.Add(question);
                 db.SaveChanges();
+            } else
+            {
+                throw new Exception("Error in Item Analysis, adding Question to database");
             }
             return db.Questions.Where(o => o.qText == question.qText).LastOrDefault();
+        }
+
+        //Add TestQuestion To DB
+        public void addTestQuestionToDB(TestQuestion tq)
+        {
+            if (ModelState.IsValid)
+            {
+                db.TestQuestions.Add(tq);
+                db.SaveChanges();
+            } else
+            {
+                throw new Exception("Error in Item Analysis, adding TestQuestion to database");
+            }
         }
 
         //Count LOC REGEX: ^(?!(\s*\*))(?!(\s*\-\-\>))(?!(\s*\<\!\-\-))(?!(\s*\n))(?!(\s*\*\/))(?!(\s*\/\*))(?!(\s*\/\/\/))(?!(\s*\/\/))(?!(\s*\}))(?!(\s*\{))(?!(\s(using))).*$

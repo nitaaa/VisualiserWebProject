@@ -19,6 +19,11 @@ namespace VisualiserWebProject.Models
         {
             QuestionID = questionID;
             TestID = testID;
+            correctSelected = 0;
+            qD1Selected = 0;
+            qD2Selected = 0;
+            qD3Selected = 0;
+
         }
 
         public int QuestionID { get; set; }
@@ -34,5 +39,10 @@ namespace VisualiserWebProject.Models
     
         public virtual Question Question { get; set; }
         public virtual Test Test { get; set; }
+
+        public int questionCount()
+        {
+            return (int)(correctSelected + qD1Selected + qD2Selected + qD3Selected);
+        }
     }
 }
