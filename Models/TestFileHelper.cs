@@ -36,6 +36,16 @@ namespace VisualiserWebProject.Models
             public string QuestionText;
             public string[] Answers;
 
+            public bool isValid()
+            {
+                string[] temp = Question.Split(':');
+                if (temp[temp.Length - 1].Split(';').Length > 4)
+                {
+                    return false;
+                }
+                return true;
+            }
+
             public bool isCorrect()
             {
                 return (StudentResponse.Equals(CorrectResponse));
@@ -44,18 +54,38 @@ namespace VisualiserWebProject.Models
             public void setAnswers()
             {
                 string[] temp = Question.Split(':');
-                QuestionText = temp[0];
+                if (temp.Length > 2)
+                {
+                    string[] text = new string[temp.Length - 2];
+                    for (int i = 0; i < text.Length; i++)
+                    {
+                        text[i] = temp[i];
+                    }
+                    QuestionText = String.Concat(text);
+                } else
+                {
+                    QuestionText = temp[0];
+                }
                 Answers = new string[4];
-                Answers = temp[1].Split(';');
+                Answers = temp[temp.Length - 1].Split(';');
                 //TODO: Throw error if more than 4 options in Answers
             }
 
             public string[] getDistractors()
             {
-                List<string> dist = Answers.ToList();
-                dist.Remove(CorrectResponse);
+                setAnswers();
+                string[] dist = new string[3];
+                int j = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (!CorrectResponse.Equals(Answers[i].Trim()))
+                    {
+                        dist[j] = Answers[i];
+                        j++;
+                    }
+                }
                 
-                return dist.ToArray();
+                return dist;
             }
 
             public override string ToString()
@@ -65,6 +95,7 @@ namespace VisualiserWebProject.Models
 
             public Question asQuestion()
             {
+                //if (!isValid()) return new Question();
                 Question q = new Question();
                 q.qText = QuestionText;
                 q.qCorrectAnswer = CorrectResponse;

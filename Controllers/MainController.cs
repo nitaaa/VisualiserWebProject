@@ -136,7 +136,11 @@ namespace VisualiserWebProject.Controllers
                                     columnNumber++;
                                     qrsf.CorrectResponse = reader.GetString(columnNumber);
                                     columnNumber++;
-                                    qrsf.setAnswers(); //Data Cleaning
+
+                                    if (qrsf.isValid())
+                                    {
+                                        qrsf.setAnswers(); //Data Cleaning
+                                    }
                                     testline.QuestionResult.Add(qrsf);
                                 }
                                 testReport.Add(testline);
@@ -204,7 +208,7 @@ namespace VisualiserWebProject.Controllers
             //average mark
             double totalmarks = 0;
             List<Question> tQuestions = new List<Question>();
-            List<TestQuestion> TestQuestions = new List<TestQuestion>();
+            List<TestQuestion> TestQuestions = new List<TestQuestion>();            
 
             foreach (TestFileHelper line in currentFile)
             {
@@ -215,6 +219,12 @@ namespace VisualiserWebProject.Controllers
                 Question dbQ;
                 foreach (QuestionResponseFileHelper qr in allQ)
                 {
+                    List<Question> dbQuestions = db.Questions.ToList();
+                    if (!qr.isValid())
+                    {
+                        continue;
+                    }
+                    curQ = new Question();
                     curQ.qText = qr.QuestionText;
                     curQ.qCorrectAnswer = qr.CorrectResponse;
                     string[] dist = qr.getDistractors();
@@ -223,14 +233,15 @@ namespace VisualiserWebProject.Controllers
                     curQ.qDistractor3 = dist[2];
 
                     //check if new question in DB
-                    if (db.Questions.Any(o => o.Equals(curQ)))
+                    if (dbQuestions.Any(o => o.Equals(curQ)))
                     {
                         //not new question - retrieve from DB
-                        dbQ = db.Questions.Where(o => o.Equals(curQ)).FirstOrDefault();
+                        dbQ = dbQuestions.Where(o => o.Equals(curQ)).FirstOrDefault();
                     } else
                     {
                         //new question - add to DB
                         dbQ = addQuestionToDB(curQ);
+                        dbQuestions.Add(dbQ);
                     }
 
                     //check if unique question in test
@@ -242,7 +253,7 @@ namespace VisualiserWebProject.Controllers
                     } else
                     {
                         //exists in TestQuestions
-                        tq = TestQuestions.Where(o => o.QuestionID == curQ.QuestionID).FirstOrDefault();
+                        tq = TestQuestions.Where(o => o.QuestionID == dbQ.QuestionID).FirstOrDefault();
                     }
 
                     if (qr.isCorrect())
@@ -250,13 +261,13 @@ namespace VisualiserWebProject.Controllers
                     else
                     {
                         //distractor increment
-                        if (qr.StudentResponse == dbQ.qDistractor1)
+                        if (qr.StudentResponse.Equals(dbQ.qDistractor1.Trim()))
                         {
                             tq.qD1Selected++;
-                        } else if (qr.StudentResponse == dbQ.qDistractor2)
+                        } else if (qr.StudentResponse.Equals(dbQ.qDistractor2.Trim()))
                         {
                             tq.qD2Selected++;
-                        } else if (qr.StudentResponse == dbQ.qDistractor3)
+                        } else if (qr.StudentResponse.Equals(dbQ.qDistractor3.Trim()))
                         {
                             tq.qD3Selected++;
                         }
@@ -279,27 +290,30 @@ namespace VisualiserWebProject.Controllers
             foreach (TestQuestion testQuestion in TestQuestions)
             {
                 int questionCount = testQuestion.questionCount();
-                decimal difficultyIndex = testQuestion.correctSelected/questionCount;
-                decimal discriminationIndex = 0;
+                double difficultyIndex = (double)testQuestion.correctSelected/(double)questionCount;
+                double discriminationIndex = 0;
                 int upper27Correct = 0;
                 int lower27Correct = 0;
+                Question question;
                 //using currentFile to get the top 27% of student and nr correct 
                 //and  ^^^     bottom      ^^^
                 foreach (TestFileHelper student in upper27)
                 {
-                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
-                    upper27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                    testQuestion.Question = db.Questions.Where(obj => obj.QuestionID == testQuestion.QuestionID).FirstOrDefault();
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.isValid() && ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    upper27Correct += sQuestions.Where(o => o.isCorrect()).Count();
                 }
 
                 foreach (TestFileHelper student in lower27)
                 {
-                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
-                    lower27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                    testQuestion.Question = db.Questions.Where(obj => obj.QuestionID == testQuestion.QuestionID).FirstOrDefault();
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.isValid() && ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    lower27Correct += sQuestions.Where(o => o.isCorrect()).Count();
                 }
 
-                discriminationIndex = (upper27Correct - lower27Correct) / questionCount;
-                testQuestion.difficultyIndex = difficultyIndex;
-                testQuestion.discriminationIndex = discriminationIndex;
+                discriminationIndex = ((double)(upper27Correct - lower27Correct)) / (double)questionCount;
+                testQuestion.difficultyIndex = Decimal.Parse(difficultyIndex.ToString());
+                testQuestion.discriminationIndex = Decimal.Parse(discriminationIndex.ToString());
                 testQuestion.markAllocation = 1;
 
 
