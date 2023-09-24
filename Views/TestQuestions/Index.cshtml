@@ -1,0 +1,81 @@
+﻿@model IEnumerable<VisualiserWebProject.Models.TestQuestion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.correctSelected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD1Selected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD2Selected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD3Selected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.markAllocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.difficultyIndex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.discriminationIndex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Question.qText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Test.testTitle)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.correctSelected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD1Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD2Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD3Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.markAllocation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.difficultyIndex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.discriminationIndex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.qText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Test.testTitle)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

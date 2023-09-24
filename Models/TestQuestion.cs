@@ -25,6 +25,7 @@ namespace VisualiserWebProject.Models
             qD3Selected = 0;
 
         }
+        public TestQuestion() { }
 
         public int QuestionID { get; set; }
         public int TestID { get; set; }

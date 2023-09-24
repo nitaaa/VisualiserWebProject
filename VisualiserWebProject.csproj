@@ -163,6 +163,7 @@
     <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TestQuestionsController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -307,6 +308,11 @@
     <Content Include="Views\Main\AssignModule.cshtml" />
     <Content Include="Views\Main\ConfirmSubmission.cshtml" />
     <Content Include="Views\Main\Loading.cshtml" />
+    <Content Include="Views\TestQuestions\Create.cshtml" />
+    <Content Include="Views\TestQuestions\Delete.cshtml" />
+    <Content Include="Views\TestQuestions\Details.cshtml" />
+    <Content Include="Views\TestQuestions\Edit.cshtml" />
+    <Content Include="Views\TestQuestions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

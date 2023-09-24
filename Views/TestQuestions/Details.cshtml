@@ -1,0 +1,90 @@
+﻿@model VisualiserWebProject.Models.TestQuestion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TestQuestion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.correctSelected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correctSelected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qD1Selected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qD1Selected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qD2Selected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qD2Selected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qD3Selected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qD3Selected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.markAllocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.markAllocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.difficultyIndex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.difficultyIndex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.discriminationIndex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.discriminationIndex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Question.qText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Question.qText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Test.testTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Test.testTitle)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
