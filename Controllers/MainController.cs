@@ -19,6 +19,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static VisualiserWebProject.Models.TestFileHelper;
 using static VisualiserWebProject.Models.Question;
 using Microsoft.Ajax.Utilities;
+using System.Data.Entity.Validation;
 
 namespace VisualiserWebProject.Controllers
 {
@@ -58,7 +59,9 @@ namespace VisualiserWebProject.Controllers
                 throw new ArgumentNullException("No File Specified");
             }
             //retrieve file from form
-            TempData["TestReport"] = ReadTestFile(Request.Files[0]);
+            HttpPostedFileBase file = Request.Files[0];
+            TempData["TestReport"] = ReadTestFile(file);
+            TempData["TestFileXSLX"] = file;
             TempData["currentTest"] = test;
             TempData["maxMark"] = maxMark;
             TempData["nrQuestions"] = nrQuestions;
@@ -151,7 +154,7 @@ namespace VisualiserWebProject.Controllers
 
         }
 
-        // GET: Main/AddNewTest
+        // GET: Main/ConfirmSubmission
         public ActionResult ConfirmSubmission()
         {
             //ViewData["TestReport"] = currentFile;
@@ -164,21 +167,22 @@ namespace VisualiserWebProject.Controllers
             {
                 throw new Exception("Values Not Found");
             }
-            ViewBag.NumberQuestions = TempData["nrQuestions"];
-            ViewData["TestReport"] = TempData["TestReport"];
+            int nrQuestions = int.Parse(TempData["nrQuestions"].ToString());
+            ViewBag.NumberQuestions = nrQuestions;
+            currentFile = (List<TestFileHelper>)TempData["TestReport"];
+            ViewData["TestReport"] = currentFile;
 
+            TempData["TestReport"] = currentFile;
+            TempData["nrQuestions"] = nrQuestions;
 
             return View();
         }
 
-        // Post: Main/AddNewTest
+        // Post: Main/SubmitFile
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SubmitFile()
         {
-            //TODO: Data Cleaning - unique attempts, each question and relating answers
-            //TODO: ITEM ANALYSIS - average mark, indices - separate method
-
             currentFile = (List<TestFileHelper>)TempData["TestReport"];
 
             maxMark = (int)TempData["maxMark"];
@@ -193,6 +197,8 @@ namespace VisualiserWebProject.Controllers
             //unique attempts
             currentTest.totalAttempts = currentFile.Count();
             currentTest.uniqueAttempts = currentFile.Distinct().Count();
+            currentTest.uploadDate = DateTime.Now;
+            currentTest.averageMark = decimal.Parse("0.0");
 
             int testID = addTestToDB(currentTest);
             //average mark
@@ -308,19 +314,39 @@ namespace VisualiserWebProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Tests.Add(test);
-                db.SaveChanges();
+                test.File = (HttpPostedFileBase)TempData["TestFileXSLX"];
+                try
+                {
+                    db.Tests.Add(test);
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Value: \"{1}\", Error: \"{2}\"",
+                                ve.PropertyName,
+                                eve.Entry.CurrentValues.GetValue<object>(ve.PropertyName),
+                                ve.ErrorMessage);
+                        }
+                    }
+                    throw;
+                }
             } else
             {
                 throw new Exception("Error in Item Analysis, adding Test to database");
             }
-            int ID = db.Tests.LastOrDefault().TestID;
-            return ID;
+            return test.TestID;
         }
 
         //Add Question To DB
         public Question addQuestionToDB(Question question)
         {
+            question.toList();
             if (ModelState.IsValid)
             {
                 db.Questions.Add(question);
@@ -329,7 +355,7 @@ namespace VisualiserWebProject.Controllers
             {
                 throw new Exception("Error in Item Analysis, adding Question to database");
             }
-            return db.Questions.Where(o => o.qText == question.qText).LastOrDefault();
+            return question;
         }
 
         //Add TestQuestion To DB

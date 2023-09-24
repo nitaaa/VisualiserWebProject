@@ -51,7 +51,7 @@ namespace VisualiserWebProject.Models
     
         public virtual ICollection<TestQuestion> TestQuestions { get; set; }
         public virtual ICollection<Topic> Topics { get; set; }
-
+        
         public List<String> AllDistractors;
 
         public void toList()

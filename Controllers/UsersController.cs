@@ -220,6 +220,7 @@ namespace VisualiserWebProject.Controllers
             {
                 IDataRecord record = (IDataRecord)Reader;
                 User curUser = new User();
+                curUser.UserID = int.Parse(record[0].ToString());
                 curUser.password = record[5].ToString();
                 curUser.salt = record[6].ToString();
                 byte[] saltByteArray = Encoding.Default.GetBytes(curUser.salt);
@@ -230,7 +231,7 @@ namespace VisualiserWebProject.Controllers
                     //Found user with correct password
                     flag = true;
                     //Set user cookie - for use with tests
-                    Response.Cookies.Add(SetUserCookie(curUser.UserID.ToString()));
+                    SetUserCookie(curUser.UserID.ToString());
                     break;
                 }
             }
@@ -241,11 +242,11 @@ namespace VisualiserWebProject.Controllers
         }
 
         //Setting up cookies https://www.c-sharpcorner.com/UploadFile/annathurai/cookies-in-Asp-Net/
-        public HttpCookie SetUserCookie(string userID)
+        public void SetUserCookie(string userID)
         {
             HttpCookie UID = new HttpCookie("userID");
             UID.Value = userID;
-            return UID;
+            Response.Cookies.Add(UID);
         }
 
         /*Logging out of the web application

@@ -8,8 +8,19 @@
 }
 <h1>File Preview</h1>
 
+@using (Html.BeginForm("SubmitFile", "Main", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Confirm Submit" class="btn btn-default" />
+        </div>
+    </div>
+}
 <p>
-    @Html.ActionLink("Submit File", "SubmitFile")
+    @*<button id="submitFile" value="Confirm Submit" />*@
+    @*@Html.Action("SubmitFile", "Main")*@
     @Html.ActionLink("Cancel", "AddNewTest")
 </p>
 
