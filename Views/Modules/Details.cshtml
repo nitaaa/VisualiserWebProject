@@ -1,0 +1,50 @@
+﻿@model VisualiserWebProject.Models.Module
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Module</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.moduleCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.moduleCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.moduleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.moduleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.archived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.archived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.userFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.userFirstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ModuleID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

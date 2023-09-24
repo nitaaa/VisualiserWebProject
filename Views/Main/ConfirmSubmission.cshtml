@@ -1,0 +1,57 @@
+﻿@model IEnumerable<VisualiserWebProject.Models.TestFileHelper>
+@{
+    ViewBag.Title = "Confirm Submission";
+}
+
+@{
+    var report = (List<VisualiserWebProject.Models.TestFileHelper>)ViewData["TestReport"];
+}
+<h1>File Preview</h1>
+
+@using (Html.BeginForm("SubmitFile", "Main", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Confirm Submit" class="btn btn-default" />
+        </div>
+    </div>
+}
+<p>
+    @*<button id="submitFile" value="Confirm Submit" />*@
+    @*@Html.Action("SubmitFile", "Main")*@
+    @Html.ActionLink("Cancel", "AddNewTest")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mark)
+        </th>
+        @for (int i = 1; i <= ViewBag.NumberQuestions; i++)
+        {
+            <th>@Html.DisplayName("Question " + i)</th>
+            @*<th>@Html.Display("Question " + i)</th>*@
+        }
+    </tr>
+
+    @foreach (var item in report)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mark)
+            </td>
+            @foreach (var question in item.QuestionResult)
+            {
+                <td>@Html.DisplayFor(modelItem => question.QuestionText)</td>
+            }
+        </tr>
+    }
+</table>

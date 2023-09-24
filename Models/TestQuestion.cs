@@ -12,10 +12,23 @@ namespace VisualiserWebProject.Models
     using System;
     using System.Collections.Generic;
     
+    //Questions and answers from a specific test
     public partial class TestQuestion
     {
+        public TestQuestion(int questionID, int testID)
+        {
+            QuestionID = questionID;
+            TestID = testID;
+            correctSelected = 0;
+            qD1Selected = 0;
+            qD2Selected = 0;
+            qD3Selected = 0;
+
+        }
+
         public int QuestionID { get; set; }
         public int TestID { get; set; }
+        //number of times the correct answer was selected
         public int correctSelected { get; set; }
         public Nullable<int> qD1Selected { get; set; }
         public Nullable<int> qD2Selected { get; set; }
@@ -26,5 +39,10 @@ namespace VisualiserWebProject.Models
     
         public virtual Question Question { get; set; }
         public virtual Test Test { get; set; }
+
+        public int questionCount()
+        {
+            return (int)(correctSelected + qD1Selected + qD2Selected + qD3Selected);
+        }
     }
 }

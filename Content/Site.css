@@ -28,3 +28,15 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+
+/*For tables*/
+
+/*Divider for sidenav*/
+.bottom-border-divider {
+    border-bottom: 1px solid black;
+}
+
+.quick-link {
+    display: block;
+}

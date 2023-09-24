@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/VisualiserWebProject/v17/.suo
+/bin/VisualiserWebProject.dll
+/.vs/VisualiserWebProject/v17/.suo
+/bin/
+/obj/Debug
+/bin/VisualiserWebProject.dll
+/bin/VisualiserWebProject.pdb
+/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/obj/Debug/VisualiserWebProject.csproj.CoreCompileInputs.cache
+/obj/Debug/VisualiserWebProject.dll
+/obj/Debug/VisualiserWebProject.pdb
+/obj/Debug/VisualiserWebProject.csproj.AssemblyReference.cache
+/obj/Debug/VisualiserWebProject.csproj.FileListAbsolute.txt
+/bin/VisualiserWebProject.dll.config

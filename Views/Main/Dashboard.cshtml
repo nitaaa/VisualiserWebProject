@@ -5,3 +5,34 @@
 
 <h2>Dashboard</h2>
 
+<div style="width:100%">
+
+    @* Quick links *@
+    <table width="100%" style="align-self: center">
+        <tr><th colspan="4">Quick Links</th></tr>
+        <tr>
+            <td onclick="location.href='@Url.Action("Index","Modules")'" class="text-center"><img src="~/Content/Images/Icons/binders.png" alt="Module Icon" />Modules</td>
+            <td onclick="location.href='@Url.Action("Index","Tests")'" class="text-center"><img src="~/Content/Images/Icons/checklist.png" alt="Test Icon" />Tests</td>
+            <td onclick="location.href='@Url.Action("Index","Questions")'" class="text-center"><img src="~/Content/Images/Icons/option.png" alt="Question Icon" />Questions</td>
+        </tr>
+    </table>
+
+    @* Lastest Tests *@
+    <div>
+        <h3>Latest Tests</h3>
+        <div class="col-lg-4" id="Module1Div">
+            <h4 id="Module1H">*Module 1*</h4>
+        </div>
+        <div class="col-lg-4" id="Module2Div">
+            <h4 id="Module2H">*Module 2*</h4>
+
+        </div>
+        <div class="col-lg-4" id="Module3Div">
+            <h4 id="Module3H">*Module 3*</h4>
+
+        </div>
+    </div>
+
+</div>
+
+<hr />

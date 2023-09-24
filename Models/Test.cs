@@ -11,7 +11,9 @@ namespace VisualiserWebProject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Web;
+
     public partial class Test
     {
         public Test()
@@ -21,17 +23,53 @@ namespace VisualiserWebProject.Models
     
         public int TestID { get; set; }
         public int ModuleID { get; set; }
+
+        //Annotation - Display Name, Required, Input String Length
+        [Display(Name = "Test Title")]
+        [Required(ErrorMessage = "Please enter the test title (name).", AllowEmptyStrings = false)]
+        [StringLength(225)]
         public string testTitle { get; set; }
+
+        //Annotation - Display Name, Required, Input String Length
+        [Display(Name = "Test Type")]
+        [Required(ErrorMessage = "Please enter the test type.", AllowEmptyStrings = false)]
+        [StringLength(225)]
         public string testType { get; set; }
+
+        //Set in MainController.ReadTestFile
         public int totalAttempts { get; set; }
         public int uniqueAttempts { get; set; }
         public decimal averageMark { get; set; }
+
+        //Annotation - Display Name, Required, Input String Length
+        [Display(Name = "Test Date")]
+        [DataType(DataType.Date)]
+        [UIHint("Date that the test opened or closed.")]
         public Nullable<System.DateTime> testDate { get; set; }
         public System.DateTime uploadDate { get; set; }
+
+
+        [Required]
+        [Display(Name = "Test File")]
+        public HttpPostedFileBase File { get; set; }
+
+
+        //Set in MainController.ReadTestFile
         public int assessor { get; set; }
+        public int testMark { get; set; } //max mark
     
         public virtual Module Module { get; set; }
+
+        //The user who uploaded the quiz
         public virtual User User { get; set; }
+
         public virtual ICollection<TestQuestion> TestQuestions { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            bool response = true;
+            
+            return response;
+        }
     }
 }
