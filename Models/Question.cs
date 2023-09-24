@@ -54,7 +54,7 @@ namespace VisualiserWebProject.Models
 
         public List<String> AllDistractors;
 
-        private void toList()
+        public void toList()
         {
             AllDistractors = new List<string>();
             AllDistractors.Add(qDistractor1);

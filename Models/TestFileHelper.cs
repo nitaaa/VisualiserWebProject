@@ -25,6 +25,7 @@ namespace VisualiserWebProject.Models
         public string Mark;
 
         public List<QuestionResponseFileHelper> QuestionResult;
+
         //Questions
         public class QuestionResponseFileHelper
         {
@@ -60,6 +61,35 @@ namespace VisualiserWebProject.Models
             public override string ToString()
             {
                 return Question;
+            }
+
+            public Question asQuestion()
+            {
+                Question q = new Question();
+                q.qText = QuestionText;
+                q.qCorrectAnswer = CorrectResponse;
+                string[] distractors = getDistractors();
+                q.qDistractor1 = distractors[0];
+                q.qDistractor2 = distractors[1];
+                q.qDistractor3 = distractors[2];
+                return q;
+            }
+
+            public override bool Equals(object obj)
+            {
+                bool response = true;
+                Question thisq = asQuestion();
+                Question question = obj as Question;
+                thisq.toList();
+                question.toList();
+                if (QuestionText == question.qText && CorrectResponse == question.qCorrectAnswer)
+                {
+                    foreach (string s in question.AllDistractors)
+                    {
+                        if (!thisq.AllDistractors.Contains(s)) response = false;
+                    }
+                }
+                return response;
             }
         }
 

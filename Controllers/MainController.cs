@@ -18,6 +18,7 @@ using VisualiserWebProject.Models;
 using static System.Net.Mime.MediaTypeNames;
 using static VisualiserWebProject.Models.TestFileHelper;
 using static VisualiserWebProject.Models.Question;
+using Microsoft.Ajax.Utilities;
 
 namespace VisualiserWebProject.Controllers
 {
@@ -263,33 +264,41 @@ namespace VisualiserWebProject.Controllers
             List<TestFileHelper> upper27 = new List<TestFileHelper>();
             List<TestFileHelper> lower27 = new List<TestFileHelper>();
             List<TestFileHelper> studentResponses = new List<TestFileHelper>(currentFile);
-            studentResponses.OrderByDescending(o => int.Parse(o.Mark));  
+
             //get upper 27%
-
-            
+            upper27 = studentResponses.OrderByDescending(o => int.Parse(o.Mark)).Take(p27).ToList();
             //get lower 27%
-
+            lower27 = studentResponses.OrderBy(o => int.Parse(o.Mark)).Take(p27).ToList();
             double averageMark = totalmarks / currentTest.totalAttempts;
             foreach (TestQuestion testQuestion in TestQuestions)
             {
                 int questionCount = testQuestion.questionCount();
                 decimal difficultyIndex = testQuestion.correctSelected/questionCount;
                 decimal discriminationIndex = 0;
-
+                int upper27Correct = 0;
+                int lower27Correct = 0;
                 //using currentFile to get the top 27% of student and nr correct 
                 //and  ^^^     bottom      ^^^
-                
+                foreach (TestFileHelper student in upper27)
+                {
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    upper27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                }
 
+                foreach (TestFileHelper student in lower27)
+                {
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    lower27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                }
+
+                discriminationIndex = (upper27Correct - lower27Correct) / questionCount;
                 testQuestion.difficultyIndex = difficultyIndex;
                 testQuestion.discriminationIndex = discriminationIndex;
                 testQuestion.markAllocation = 1;
 
 
                 addTestQuestionToDB(testQuestion);
-            }         
-
-            
-
+            }     
             #endregion
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
