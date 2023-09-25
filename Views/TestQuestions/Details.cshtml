@@ -4,87 +4,78 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 style="text-align:center">Question Information and Response Distribution</h2>
 
-<div>
-    <h4>TestQuestion</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.correctSelected)
-        </dt>
+<h4>Question: @Html.DisplayFor(model => model.Question.qText)</h4>
+<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.correctSelected)
-        </dd>
+<div id="wrapper">
+    <div id="dataTable" class="float_child">
+        <dl class="dl-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.qD1Selected)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qCorrectAnswer)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qCorrectAnswer) (@Html.DisplayFor(model => model.correctSelected))
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.qD1Selected)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor1)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor1) (@Html.DisplayFor(model => model.qD1Selected))
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.qD2Selected)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor2)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor2) (@Html.DisplayFor(model => model.qD2Selected))
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.qD2Selected)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor3)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor3) (@Html.DisplayFor(model => model.qD3Selected))
+            </dd>
+        </dl>
+    </div>
+    <div id="bars" class="float_child">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.difficultyIndex)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.qD3Selected)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.difficultyIndex)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.qD3Selected)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.discriminationIndex)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.markAllocation)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.discriminationIndex)
+            </dd>
+        </dl>
 
-        <dd>
-            @Html.DisplayFor(model => model.markAllocation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.difficultyIndex)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.difficultyIndex)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.discriminationIndex)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.discriminationIndex)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.qText)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Question.qText)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Test.testTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Test.testTitle)
-        </dd>
-
-    </dl>
+        @*TODO: data bars*@
+    </div>
 </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<style>
+    #wrapper {
+        display: flex;
+    }
+
+    .float_child {
+        flex: 1;
+        padding: 10px;
+    }
+</style>

@@ -18,18 +18,16 @@ namespace VisualiserWebProject.Controllers
         // GET: TestQuestions
         public ActionResult Index()
         {
-            var testQuestions = db.TestQuestions.Include(t => t.Question).Include(t => t.Test);
+            
+            var testQuestions = db.TestQuestions.Include(t => t.Question).Include(t => t.Test).Include(t => t.Test.Module);
+            
             return View(testQuestions.ToList());
         }
 
         // GET: TestQuestions/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int Qid, int Tid)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TestQuestion testQuestion = db.TestQuestions.Find(id);
+            TestQuestion testQuestion = db.TestQuestions.Where(t => t.TestID == Tid && t.QuestionID == Qid).FirstOrDefault();
             if (testQuestion == null)
             {
                 return HttpNotFound();

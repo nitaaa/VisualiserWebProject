@@ -11,7 +11,8 @@ namespace VisualiserWebProject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     //Questions and answers from a specific test
     public partial class TestQuestion
     {
@@ -30,12 +31,18 @@ namespace VisualiserWebProject.Models
         public int QuestionID { get; set; }
         public int TestID { get; set; }
         //number of times the correct answer was selected
+        [Display(Name = "Correct Option Selected")]
         public int correctSelected { get; set; }
+        [Display(Name = "Distractor 1 Selected")]
         public Nullable<int> qD1Selected { get; set; }
+        [Display(Name = "Distractor 2 Selected")]
         public Nullable<int> qD2Selected { get; set; }
+        [Display(Name = "Distractor 3 Selected")]
         public Nullable<int> qD3Selected { get; set; }
         public decimal markAllocation { get; set; }
+        [Display(Name = "Difficulty Index")]
         public decimal difficultyIndex { get; set; }
+        [Display(Name = "Discrimination Index")]
         public decimal discriminationIndex { get; set; }
     
         public virtual Question Question { get; set; }

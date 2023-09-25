@@ -316,10 +316,25 @@ namespace VisualiserWebProject.Controllers
                 testQuestion.discriminationIndex = Decimal.Parse(discriminationIndex.ToString());
                 testQuestion.markAllocation = 1;
 
-
                 addTestQuestionToDB(testQuestion);
-            }     
+            }
             #endregion
+
+            currentTest.averageMark = (Decimal)averageMark;
+            try
+            {
+                currentTest.File = (HttpPostedFileBase)TempData["TestFileXSLX"];
+                if (ModelState.IsValid)
+                {
+                    db.Entry(currentTest).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
             return RedirectToAction("Dashboard"); //TODO: Update to correct page
         }
 
