@@ -178,6 +178,7 @@
     <Compile Include="Models\Question.cs">
       <DependentUpon>VisualiserModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestionFrequency.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>VisualiserModel.tt</DependentUpon>
     </Compile>
@@ -212,6 +213,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\barchart.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -319,6 +321,8 @@
     <Content Include="Views\TestQuestions\Details.cshtml" />
     <Content Include="Views\TestQuestions\Edit.cshtml" />
     <Content Include="Views\TestQuestions\Index.cshtml" />
+    <Content Include="Content\Charts\ChartArrayBasic.cshtml" />
+    <Content Include="Views\Shared\chart2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

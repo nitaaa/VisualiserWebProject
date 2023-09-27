@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using VisualiserWebProject.Models;
@@ -32,6 +34,12 @@ namespace VisualiserWebProject.Controllers
             {
                 return HttpNotFound();
             }
+            string csv = "text,selected\n";
+            csv += testQuestion.Question.qText + "," + testQuestion.correctSelected + "\n";
+            csv += testQuestion.Question.qDistractor1.Trim() + "," + testQuestion.qD1Selected + "\n";
+            csv += testQuestion.Question.qDistractor2.Trim() + "," + testQuestion.qD2Selected + "\n";
+            csv += testQuestion.Question.qDistractor3.Trim() + "," + testQuestion.qD2Selected + "\n";
+            ViewBag.data = csv;
             return View(testQuestion);
         }
 
