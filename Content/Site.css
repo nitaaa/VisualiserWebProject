@@ -1,6 +1,6 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -41,3 +41,40 @@ textarea {
     display: block;
 }
 
+.full-length-div {
+    height: 80vh;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width:100%;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+#head-info {
+    height: 20vh;
+    width: 100vw;
+    display: inline-flex;
+}
+
+#imgContainer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex: 1;
+}
+
+#logo {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#userInfo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    flex: 1;
+    align-content: end;
+}

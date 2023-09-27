@@ -231,7 +231,9 @@ namespace VisualiserWebProject.Controllers
                     //Found user with correct password
                     flag = true;
                     //Set user cookie - for use with tests
-                    SetUserCookie(curUser.UserID.ToString());
+
+                    string username = curUser.getFullName();
+                    SetUserCookie(curUser.UserID.ToString(), username);
                     break;
                 }
             }
@@ -242,11 +244,14 @@ namespace VisualiserWebProject.Controllers
         }
 
         //Setting up cookies https://www.c-sharpcorner.com/UploadFile/annathurai/cookies-in-Asp-Net/
-        public void SetUserCookie(string userID)
+        public void SetUserCookie(string userID, string fullname)
         {
             HttpCookie UID = new HttpCookie("userID");
             UID.Value = userID;
             Response.Cookies.Add(UID);
+            HttpCookie username = new HttpCookie("username");
+            username.Value = fullname;
+            Response.Cookies.Add(username);
         }
 
         /*Logging out of the web application
