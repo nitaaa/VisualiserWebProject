@@ -218,6 +218,10 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Icons\binders-color.png" />
+    <Content Include="Content\Images\Icons\conversation-color.png" />
+    <Content Include="Content\Images\Icons\conversation.png" />
+    <Content Include="Content\Images\Icons\add-user.png" />
     <Content Include="Content\Images\Icons\binders.png" />
     <Content Include="Content\Images\Icons\checklist.png" />
     <Content Include="Content\Images\Icons\dashboard.png" />
@@ -229,6 +233,7 @@
     <Content Include="Content\Images\Icons\option.png" />
     <Content Include="Content\Images\Icons\settings.png" />
     <Content Include="Content\Images\Icons\user.png" />
+    <Content Include="Content\Images\visualiser.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -321,11 +326,13 @@
     <Content Include="Views\TestQuestions\Details.cshtml" />
     <Content Include="Views\TestQuestions\Edit.cshtml" />
     <Content Include="Views\TestQuestions\Index.cshtml" />
-    <Content Include="Content\Charts\ChartArrayBasic.cshtml" />
+    <Content Include="Views\TestQuestions\ChartArrayBasic.cshtml" />
     <Content Include="Views\Shared\chart2.cshtml" />
+    <Content Include="Views\Shared\_userPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Charts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
