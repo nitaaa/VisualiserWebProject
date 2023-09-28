@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -34,12 +35,16 @@ namespace VisualiserWebProject.Controllers
             {
                 return HttpNotFound();
             }
-            string csv = "text,selected\n";
-            csv += testQuestion.Question.qText + "," + testQuestion.correctSelected + "\n";
-            csv += testQuestion.Question.qDistractor1.Trim() + "," + testQuestion.qD1Selected + "\n";
-            csv += testQuestion.Question.qDistractor2.Trim() + "," + testQuestion.qD2Selected + "\n";
-            csv += testQuestion.Question.qDistractor3.Trim() + "," + testQuestion.qD2Selected + "\n";
-            ViewBag.data = csv;
+            string[] labels = { testQuestion.Question.qCorrectAnswer, testQuestion.Question.qDistractor1.Trim(),
+                testQuestion.Question.qDistractor2.Trim(), testQuestion.Question.qDistractor3.Trim() };
+            int[] data = {testQuestion.correctSelected,testQuestion.qD1Selected.GetValueOrDefault(0),
+                testQuestion.qD2Selected.GetValueOrDefault(0), testQuestion.qD3Selected.GetValueOrDefault(0) };
+            var jLabels = JsonConvert.SerializeObject(labels);
+            var jdata = JsonConvert.SerializeObject(data);
+
+            ViewBag.JLabels = jLabels;
+            ViewBag.JData = jdata;
+            
             return View(testQuestion);
         }
 

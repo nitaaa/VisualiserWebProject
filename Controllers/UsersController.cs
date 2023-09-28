@@ -232,6 +232,8 @@ namespace VisualiserWebProject.Controllers
                     flag = true;
                     //Set user cookie - for use with tests
 
+                    curUser.userFirstName = record[1].ToString();
+                    curUser.userLastName = record[2].ToString();
                     string username = curUser.getFullName();
                     SetUserCookie(curUser.UserID.ToString(), username);
                     break;
@@ -256,12 +258,12 @@ namespace VisualiserWebProject.Controllers
 
         /*Logging out of the web application
          */
-        [Authorize]
         public ActionResult Logout()
         {
             //Sign user out and clear current sessions cookies
+            Request.Cookies.Remove("username");
+            Request.Cookies.Remove("userID");
             FormsAuthentication.SignOut();
-            Response.Cookies.Clear();
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,17 +1,18 @@
 ﻿@if (@Request.Cookies["username"] != null)
 {
-    var username = @Request.Cookies["username"].Value;
-    <p>Hello @username</p>
+    var name = Request.Cookies["username"].Value;
+    <p>Hello @name</p>
 }
 else
 {
-    <a href="@Url.Action("Register","Users")">
-        <img style="max-inline-size: 24px" src="~/Content/Images/Icons/icons8-register-16.png" /> Register
+<div>
+    <a class="imgBtn" href="@Url.Action("Register","Users")">
+        <img style="max-inline-size: 24px" src="~/Content/Images/Icons/add-user.png" /> Register
     </a>
-    <br />
-    <a href="@Url.Action("Login","Users")">
+    <a class="imgBtn" href="@Url.Action("Login","Users")">
         <img style="max-inline-size: 24px" src="~/Content/Images/Icons/log-in.png" /> Log In
     </a>
+</div>
 }
 <!--if (Request.Cookies["username"].Value != null)
 {-->
