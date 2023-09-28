@@ -8,45 +8,57 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidenav accent col-sm-2 ">
-
-        
-        <table width="100%">
-            <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/Icons/icons8-home-16.png" alt="Home Icon" /></td><td class="text-right">Home</td></tr>
-            <tr onclick="location.href='@Url.Action("About","Home")'"><td><img src="~/Content/Images/Icons/icons8-about-16.png" alt="About Icon" /></td><td class="text-right">About</td></tr>
-            <tr onclick="location.href='@Url.Action("Register", "Users")'"><td><img src="~/Content/Images/Icons/icons8-register-16.png" alt="Register Icon" /></td><td class="text-right">Register</td></tr>
-            <tr onclick="location.href='@Url.Action("Login", "Users")'"><td><img src="~/Content/Images/Icons/log-in.png" alt="Log In Icon" style="max-width: 16px" /></td><td class="text-right">Log In</td></tr>
-            <tr onclick="location.href='@Url.Action("Logout", "Users")'" class="bottom-border-divider"><td><img src="~/Content/Images/Icons/logout.png" alt="Log Out Icon" style="max-width: 16px" /></td><td class="text-right">Log Out</td></tr>
-
-            @* Below is only visible when the user logs in. *@
-            @* TODO: User Account *@
-            @* TODO: Home/My Dashboard *@
-            @* TODO: Modules *@
-            @* TODO: Tests *@
-            @* TODO: Questions *@
-            @* TODO: Settings - Different based on user roles *@
-            <tr onclick="location.href='@Url.Action("Dashboard","Main")'"><td><img src="~/Content/Images/Icons/dashboard.png" style="max-width: 16px" /></td><td class="text-right">My Dashboard</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/Icons/user.png" style="max-width: 16px" /></td><td class="text-right">All Users</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Modules")'"><td><img src="~/Content/Images/Icons/binders.png" style="max-width: 16px" /></td><td class="text-right">All Modules</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Tests")'"><td><img src="~/Content/Images/Icons/checklist.png" style="max-width: 16px" /></td><td class="text-right">All Tests</td></tr>
-            <tr onclick="location.href='@Url.Action("Index", "Questions")'"><td><img src="~/Content/Images/Icons/option.png" style="max-width: 16px"></td><td class="text-right">All Questions</td></tr>
-            <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/id-badge.png" style="max-width: 16px" /></td><td class="text-right">New Role</td></tr>
-
-
-        </table>
-
+<body class="full-length-div">
+    <!-- Header Bar-->
+    <div id="head-info" >
+        <div id="imgContainer">
+            <img id="logo" src="~/Content/Images/visualiser.png" />
+        </div>
+        <div id="userInfo">
+            @Html.Partial("_userPartial")
+        </div>
     </div>
+    <div>
+        <!-- Sidebar -->
+        <div class="full-length-div accent col-sm-2">
 
-    <div class="col-lg-10 container body-content ">
-        @RenderBody()
-        <hr />
-        <footer class="bottom ">
-            <p>Analysis and Visualisation of Quiz responses - Qaanita Fataar (216058090)</p>
-        </footer>
+
+            <table width="100%">
+                <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/Icons/icons8-home-16.png" alt="Home Icon" /></td><td class="text-right">Visualiser</td></tr>
+                <tr onclick="location.href='@Url.Action("About","Home")'"><td><img src="~/Content/Images/Icons/icons8-about-16.png" alt="About Icon" /></td><td class="text-right">Credits</td></tr>
+                <tr onclick="location.href='@Url.Action("Register", "Users")'"><td><img src="~/Content/Images/Icons/icons8-register-16.png" alt="Register Icon" /></td><td class="text-right">Register</td></tr>
+                <tr onclick="location.href='@Url.Action("Login", "Users")'"><td><img src="~/Content/Images/Icons/log-in.png" alt="Log In Icon" style="max-width: 16px" /></td><td class="text-right">Log In</td></tr>
+                <tr onclick="location.href='@Url.Action("Logout", "Users")'" class="bottom-border-divider"><td><img src="~/Content/Images/Icons/logout.png" alt="Log Out Icon" style="max-width: 16px" /></td><td class="text-right">Log Out</td></tr>
+
+                @* Below is only visible when the user logs in. *@
+                @* TODO: User Account *@
+                @* TODO: Home/My Dashboard *@
+                @* TODO: Modules *@
+                @* TODO: Tests *@
+                @* TODO: Questions *@
+                @* TODO: Settings - Different based on user roles *@
+                <tr onclick="location.href='@Url.Action("Dashboard","Main")'"><td><img src="~/Content/Images/Icons/home.png" style="max-width: 16px" /></td><td class="text-right">Home</td></tr>
+                <tr onclick="location.href='@Url.Action("Index", "Users")'"><td><img src="~/Content/Images/Icons/user.png" style="max-width: 16px" /></td><td class="text-right">All Users</td></tr>
+                <tr onclick="location.href='@Url.Action("Index", "Modules")'"><td><img src="~/Content/Images/Icons/binders.png" style="max-width: 16px" /></td><td class="text-right">All Modules</td></tr>
+                <tr onclick="location.href='@Url.Action("Index", "Tests")'"><td><img src="~/Content/Images/Icons/checklist.png" style="max-width: 16px" /></td><td class="text-right">All Tests</td></tr>
+                <tr onclick="location.href='@Url.Action("Index", "Questions")'"><td><img src="~/Content/Images/Icons/option.png" style="max-width: 16px"></td><td class="text-right">All Questions</td></tr>
+                <tr onclick="location.href='@Url.Action("Create", "Roles")'"><td><img src="~/Content/Images/Icons/id-badge.png" style="max-width: 16px" /></td><td class="text-right">New Role</td></tr>
+
+
+            </table>
+
+            <hr />
+            <footer class="bottom">
+                <p>Analysis and Visualisation of Quiz responses - Qaanita Fataar (216058090)</p>
+            </footer>
+        </div>
+
+        <div class="col-lg-10 container body-content ">
+            @RenderBody()
+            <hr />
+
+        </div>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
