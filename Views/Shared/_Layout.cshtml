@@ -23,7 +23,7 @@
         <div class="full-length-div accent col-sm-2">
 
 
-            <table width="100%">
+            <table class="navTable" width="100%">
                 <tr onclick="location.href='@Url.Action("Index","Home")'"><td><img src="~/Content/Images/Icons/icons8-home-16.png" alt="Home Icon" style="max-width: 16px" /></td><td class="text-right">Visualiser</td></tr>
                 <tr onclick="location.href='@Url.Action("About","Home")'"><td><img src="~/Content/Images/Icons/icons8-about-16.png" alt="About Icon" style="max-width: 16px"/></td><td class="text-right">Credits</td></tr>
                 <tr onclick="location.href='@Url.Action("Register", "Users")'"><td><img src="~/Content/Images/Icons/add-user.png" alt="Register Icon" style="max-width: 16px"/></td><td class="text-right">Register</td></tr>
@@ -54,7 +54,7 @@
             </footer>
         </div>
 
-        <div class="col-lg-10 container body-content ">
+        <div class="col-lg-10 container body-content full-length-div">
             @RenderBody()
             <hr />
 

@@ -124,6 +124,24 @@ namespace VisualiserWebProject.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult TestDashboard(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Test test = db.Tests.Find(id);
+            if (test == null)
+            {
+                return HttpNotFound();
+            }
+
+            List<TestQuestion> testQuestions = db.TestQuestions.Where(x => x.TestID == test.TestID).ToList();
+            ViewBag.TestQuestions = testQuestions;
+
+            return View(test);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -250,9 +250,11 @@ namespace VisualiserWebProject.Controllers
         {
             HttpCookie UID = new HttpCookie("userID");
             UID.Value = userID;
+            UID.Expires = DateTime.Now.AddHours(5);
             Response.Cookies.Add(UID);
             HttpCookie username = new HttpCookie("username");
             username.Value = fullname;
+            username.Expires = DateTime.Now.AddHours(5);
             Response.Cookies.Add(username);
         }
 

@@ -329,6 +329,7 @@
     <Content Include="Views\TestQuestions\ChartArrayBasic.cshtml" />
     <Content Include="Views\Shared\chart2.cshtml" />
     <Content Include="Views\Shared\_userPartial.cshtml" />
+    <Content Include="Views\Tests\TestDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,12 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>All Test Questions</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div id="searchSort">
+
+</div>
+
+<table class="table, _background">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Test.Module.moduleCode)
@@ -72,7 +73,7 @@
         </td>
         <td>
             @*@Html.ActionLink("Edit", "Edit", new { Tid = item.TestID, Qid = item.QuestionID }) |*@
-            @Html.ActionLink("Details", "Details", new { Tid = item.TestID, Qid = item.QuestionID }) |
+            @Html.ActionLink("Visualise", "Details", new { Tid = item.TestID, Qid = item.QuestionID }) 
             @*@Html.ActionLink("Delete", "Delete", new { Tid = item.TestID, Qid = item.QuestionID })*@
         </td>
     </tr>
