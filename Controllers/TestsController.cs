@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -29,6 +30,7 @@ namespace VisualiserWebProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Test test = db.Tests.Find(id);
+            List<TestQuestion> testquestions = db.TestQuestions.Where(t => t.TestID == test.TestID).ToList();
             if (test == null)
             {
                 return HttpNotFound();
@@ -138,6 +140,27 @@ namespace VisualiserWebProject.Controllers
 
             List<TestQuestion> testQuestions = db.TestQuestions.Where(x => x.TestID == test.TestID).ToList();
             ViewBag.TestQuestions = testQuestions;
+
+
+
+            ViewBag.PercentPassed = ((double)test.testMark / test.totalAttempts) * 100;
+            ViewBag.AveragePercent = (test.averageMark * 100);
+
+
+            string[] labels = { "Total Attempts", "Unique Attemps" };
+            int[] data = { test.totalAttempts, test.uniqueAttempts };
+            var jLabels = JsonConvert.SerializeObject(labels);
+            var jdata = JsonConvert.SerializeObject(data);
+            ViewBag.AttemptsData = jdata;
+            ViewBag.AttemptsLabels = jLabels;
+
+
+            //serialise to json: question number, question difficulty, question discrimination
+            //serialise to json: question number, nr attempts, nr correct
+
+
+            ViewBag.Jlabels = "";
+            ViewBag.JData = "";
 
             return View(test);
         }

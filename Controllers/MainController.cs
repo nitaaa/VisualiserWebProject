@@ -31,6 +31,7 @@ namespace VisualiserWebProject.Controllers
         private Test currentTest;
         private int maxMark;
         private int nrQuestions;
+        private int nrPassed;
 
         // GET: Main
         public ActionResult Dashboard()
@@ -77,7 +78,7 @@ namespace VisualiserWebProject.Controllers
             int columnNumber = 0;
             List<string> columns = new List<string>();
             List<TestFileHelper> testReport = new List<TestFileHelper>();
-
+            nrPassed = 0;
             //Using the Excel Data Reader Package
             //FileStream stream = new FileStream(inputFile.FileName, FileMode.Open,FileAccess.Read);
             using (Stream stream = inputFile.InputStream) //System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
@@ -123,7 +124,10 @@ namespace VisualiserWebProject.Controllers
                                 columnNumber++;
                                 testline.Mark = reader.GetString(columnNumber);
                                 columnNumber++;
-
+                                if (double.Parse(testline.Mark)/maxMark >= 0.5)
+                                {
+                                    nrPassed++;
+                                }
                                 testline.QuestionResult = new List<QuestionResponseFileHelper>();
                                 //for the remainder of the columns, the format will be
                                 //|Question n|Student Response n|Correct Response n|
@@ -153,6 +157,7 @@ namespace VisualiserWebProject.Controllers
 
                 }
             }
+            TempData["Passed"] = nrPassed;
             nrQuestions = testReport.First().QuestionResult.Count;
             return testReport;
 
@@ -193,7 +198,6 @@ namespace VisualiserWebProject.Controllers
             nrQuestions = (int)TempData["nrQuestions"];
 
             currentTest = (Test)TempData["currentTest"];
-            currentTest.uniqueAttempts = currentFile.Distinct().Count(); //select distinct based on student ID
             currentTest.testMark = maxMark;
             currentTest.assessor = int.Parse(Request.Cookies["userID"].Value);
 
@@ -320,7 +324,10 @@ namespace VisualiserWebProject.Controllers
             }
             #endregion
 
+
+            //YOU MADE CHANGES - testMark now NRPASSED
             currentTest.averageMark = (Decimal)averageMark;
+            currentTest.testMark = (int)TempData["Passed"];
             try
             {
                 currentTest.File = (HttpPostedFileBase)TempData["TestFileXSLX"];

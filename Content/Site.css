@@ -7,7 +7,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    background-color: #10cdb020;
+    background-color: #a6a6a660;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -135,5 +135,5 @@ textarea {
 
 .full-length-div:has(> ._background) {
     height: auto;
-    background-color: #10cdb020;
+    background-color: #a6a6a660;
 }
