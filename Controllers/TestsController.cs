@@ -87,7 +87,7 @@ namespace VisualiserWebProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TestID,ModuleID,testTitle,testType,totalAttempts,uniqueAttempts,averageMark,testDate,uploadDate,assessor")] Test test)
+        public ActionResult Edit([Bind(Include = "TestID,ModuleID,testTitle,testType,totalAttempts,uniqueAttempts,averageMark,testMark,testDate,uploadDate,assessor")] Test test)
         {
             if (ModelState.IsValid)
             {
@@ -157,10 +157,29 @@ namespace VisualiserWebProject.Controllers
 
             //serialise to json: question number, question difficulty, question discrimination
             //serialise to json: question number, nr attempts, nr correct
+            int start = 1;
+            int end = testQuestions.Count();
 
+            List<int> questionNr = Enumerable.Range(start, end).ToList();
+            //    new List<string>();
+            //for (int i = 1; i <= testQuestions.Count(); i++)
+            //{
+            //    questionNr.Add("Q" + i.ToString());
+            //}
+            ViewBag.QuestionNr = JsonConvert.SerializeObject(questionNr);
 
-            ViewBag.Jlabels = "";
-            ViewBag.JData = "";
+            List<double> qdiff = testQuestions.Select(t => (double)t.difficultyIndex*100).ToList(); 
+            List<double> qdisc = testQuestions.Select(t => (double)t.discriminationIndex*100).ToList();
+            ViewBag.LQDiff = JsonConvert.SerializeObject(qdiff);
+            ViewBag.LQDisc = JsonConvert.SerializeObject(qdisc);
+
+            List<int> nrAttempts = testQuestions.Select(t => t.questionCount()).ToList();
+            List<int> nrCorrect = testQuestions.Select(t => t.correctSelected).ToList();
+            ViewBag.LNrAttemps = JsonConvert.SerializeObject(nrAttempts);
+            ViewBag.LNrCorrect = JsonConvert.SerializeObject(nrCorrect);
+
+            //ViewBag.Jlabels = "";
+            //ViewBag.JData = "";
 
             return View(test);
         }

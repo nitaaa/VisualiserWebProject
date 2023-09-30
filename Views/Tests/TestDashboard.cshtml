@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div id="barchart">
+    <div id="barchart" style="margin:20px; height: 300px; max-width: 70vw;">
 
     </div>
 
@@ -94,7 +94,7 @@
             for (var i = 0; i < array.length; i++) {
                 labels[i] = array[i];
             }
-        var chart = new CanvasJS.Chart("attempts", {
+        var chart1 = new CanvasJS.Chart("attempts", {
             animationEnabled: true,
             title: {
                 text: ""
@@ -118,8 +118,92 @@
                 ]
             }]
         });
-        chart.render();
 
+        //problem here - solved ..? mayhaps
+        var qlabels = [];
+        array = @Html.Raw(@ViewBag.QuestionNr);
+        for(var i = 0; i < array.length; i++) {
+           qlabels[i] = array[i];
+        }
+
+        var dp1 = [];
+        array = @ViewBag.LQDiff;
+        for(var i = 0; i < array.length; i++) {
+           dp1[i] = array[i];
+        }
+
+        var dp2 = [];
+        array = @ViewBag.LQDisc;
+        for(var i = 0; i < array.length; i++) {
+           dp2[i] = array[i];
+        }
+
+        var difArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: dp1[index]
+            };
+        });
+
+        var discArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: dp2[index]
+            };
+        });
+
+        //https://canvasjs.com/docs/charts/chart-options/data/datapoints/click/
+        var chart2 = new CanvasJS.Chart("barchart", {
+            title: {
+                text: "Difficulty and Discrimination Indices per Question"
+            },
+            axisX: {
+                title: "Question Number"
+            },
+            axisY2: {
+                title: "Percentage",
+                suffix: "%"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "top",
+                horizontalAlign: "center",
+                dockInsidePlotArea: true,
+                itemclick: toggleDataSeries
+            },
+            data: [{
+                type: "line",
+                axisYType: "secondary",
+                name: "Difficulty Index",
+                showInLegend: true,
+                markerSize: 0,
+                dataPoints: difArray
+            },
+            {
+                type: "line",
+                axisYType: "secondary",
+                name: "Discrimination Index",
+                showInLegend: true,
+                markerSize: 0,
+                dataPoints: discArray
+            },]
+        });
+
+
+        chart1.render();
+        chart2.render();
+
+        function toggleDataSeries(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            chart2.render();
+        }
 
     }
 </script>

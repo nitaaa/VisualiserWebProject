@@ -43,7 +43,7 @@ namespace VisualiserWebProject.Models
 
         //Annotation - Display Name, Required, Input String Length
         [Display(Name = "Test Date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [UIHint("Date that the test opened or closed.")]
         public Nullable<System.DateTime> testDate { get; set; }
         public System.DateTime uploadDate { get; set; }
@@ -51,7 +51,7 @@ namespace VisualiserWebProject.Models
 
         [Required]
         [Display(Name = "Test File")]
-        public HttpPostedFileBase File { get; set; }
+        public virtual HttpPostedFileBase File { get; set; }
 
 
         //Set in MainController.ReadTestFile
