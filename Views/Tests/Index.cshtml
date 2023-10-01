@@ -39,7 +39,7 @@
             @Html.DisplayNameFor(model => model.Module.moduleCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.userFirstName)
+            @Html.DisplayNameFor(model => model.User)
         </th>
         <th></th>
     </tr>
@@ -74,10 +74,9 @@
             @Html.DisplayFor(modelItem => item.Module.moduleCode)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.userFirstName)
+            @Html.DisplayFor(modelItem => item.User.userFirstName) @Html.DisplayFor(modelItem => item.User.userLastName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.TestID }) |
             @Html.ActionLink("Dashboard", "TestDashboard", new { id = item.TestID }) |
             @Html.ActionLink("Details", "Details", new { id = item.TestID }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.TestID })

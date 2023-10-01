@@ -134,6 +134,14 @@
 <script src="https://cdn.canvasjs.com/ga/canvasjs.stock.min.js"></script>
 <script>
     window.onload = function () {
+            CanvasJS.addColorSet("fourBar",
+            [//colorSet Array
+
+                "#058610", //green
+                "#fdd362",
+                "#cd9fe7",
+                "#10cdb0"
+                ]);
 
             var datay = [];
             var array = @ViewBag.JData;
@@ -151,9 +159,10 @@
                 }
             }
 
-            var chart = new CanvasJS.Chart("histogram", {
+        var chart = new CanvasJS.Chart("histogram", {
+            colorSet: "fourBar",
             animationEnabled: true,
-            theme: "light2", // "light1", "light2", "dark1", "dark2"
+                //theme: "fourBar", // "light1", "light2", "dark1", "dark2"
             title: {
             text: " "
             },

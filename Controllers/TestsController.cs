@@ -120,7 +120,12 @@ namespace VisualiserWebProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //TODO untested
             Test test = db.Tests.Find(id);
+            foreach (TestQuestion tq in test.TestQuestions)
+            {
+                db.TestQuestions.Remove(tq);
+            }
             db.Tests.Remove(test);
             db.SaveChanges();
             return RedirectToAction("Index");

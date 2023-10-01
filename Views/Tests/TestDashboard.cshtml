@@ -39,7 +39,11 @@
         </div>
     </div>
 
-    <div id="barchart" style="margin:20px; height: 300px; max-width: 70vw;">
+    <div id="linechart" style="margin:20px; height: 300px; max-width: 70vw;">
+
+    </div>
+
+    <div id="multiBarChart" style="margin:20px; height: 300px; max-width: 70vw;">
 
     </div>
 
@@ -153,7 +157,7 @@
         });
 
         //https://canvasjs.com/docs/charts/chart-options/data/datapoints/click/
-        var chart2 = new CanvasJS.Chart("barchart", {
+        var chart2 = new CanvasJS.Chart("linechart", {
             title: {
                 text: "Difficulty and Discrimination Indices per Question"
             },
@@ -176,6 +180,7 @@
             },
             data: [{
                 type: "line",
+                color: "#cd9fe7",
                 axisYType: "secondary",
                 name: "Difficulty Index",
                 showInLegend: true,
@@ -184,6 +189,7 @@
             },
             {
                 type: "line",
+                color: "#fdd362",
                 axisYType: "secondary",
                 name: "Discrimination Index",
                 showInLegend: true,
@@ -192,9 +198,69 @@
             },]
         });
 
+        //arrays for total vs correct
+        var nratt = [];
+        array = @ViewBag.LNrAttemps;
+        for(var i = 0; i < array.length; i++) {
+            nratt[i] = array[i];
+        }
+
+        var nrcor = [];
+        array = @ViewBag.LNrCorrect;
+        for(var i = 0; i < array.length; i++) {
+            nrcor[i] = array[i];
+        }
+
+        var attArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: nratt[index]
+            };
+        });
+
+        var corArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: nrcor[index]
+            };
+        });
+        var chart3 = new CanvasJS.Chart("multiBarChart", {
+        animationEnabled: true,
+            title: {
+                text: "Total vs Correct Responses"
+        },
+        axisY: {
+            title: "Number of Responses"
+        },
+        toolTip: {
+            shared: true
+        },
+        legend: {
+            cursor: "pointer",
+            itemclick: toggleDataSeries3
+        },
+        data: [{
+            type: "column",
+            name: "Total Responses",
+            legendText: "Total Responses",
+            showInLegend: true,
+            color: "#fdd362",
+            dataPoints: attArray
+        },
+        {
+            type: "column",
+            name: "Correct Responses",
+            legendText: "Correct Responses",
+            showInLegend: true,
+            color: "#cd9fe7",
+            dataPoints: corArray
+        }]
+    });
+
 
         chart1.render();
         chart2.render();
+        chart3.render();
 
         function toggleDataSeries(e) {
             if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -203,6 +269,16 @@
                 e.dataSeries.visible = true;
             }
             chart2.render();
+        }
+
+        function toggleDataSeries3(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            }
+            else {
+                e.dataSeries.visible = true;
+            }
+            chart3.render();
         }
 
     }
