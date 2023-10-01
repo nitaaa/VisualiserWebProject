@@ -1,19 +1,16 @@
 ﻿@model VisualiserWebProject.Models.Test
 
 @{
-    ViewBag.Title = "TestDashboard";
+    ViewBag.Title = "Test Dashboard";
 }
 
 <h1>@Model.Module.moduleCode - @Model.testTitle</h1>
 
-<div id="testDashContainer">
+<div id="testDashContainer" class="_background" >
     <div id="topMiniDash">
-        <div id="marks" class=".float_child">
-            <div id="passPercent" style="max-width: 80%">
-                <div>
-                    <a>Number of Students who Passed: @Model.testMark</a>
-                    <a style="text-align: right"> @ViewBag.PercentPassed%</a>
-                </div>
+        <div id="marks" class=".float_child" style="margin: 20px; padding: 10px; width: 35vw; background-color:white">
+            <div id="passPercent" style="max-width: 80%;">
+                <p>Number of Students who Passed: (@Model.testMark) @ViewBag.PercentPassed</p>
                 <div class="bar-contain">
                     <div class="bar-percent" style="width: @ViewBag.PercentPassed">
 
@@ -22,10 +19,7 @@
             </div>
             <hr />
             <div id="averageMark" style="max-width: 80%">
-                <div>
-                    <a>Average Mark: </a>
-                    <a style="text-align: right"> @Model.averageMark%</a>
-                </div>
+                <p>Average Mark: @Model.averageMark%</p>
                 <div class="bar-contain">
                     <div class="bar-percent" style="width: @ViewBag.AveragePercent">
 
@@ -33,28 +27,92 @@
                 </div>
             </div>
         </div>
-        <div id="drilldownChart" class=".float_child" style="height: 300px; max-width: 25vw;"></div>
-        <div id="attempts" class=".float_child" style="height: 300px; max-width: 25vw;">
+        <div id="attempts" class=".float_child" style="height: 300px; margin: 20px; width: 35vw; ">
 
         </div>
     </div>
-
-    <div id="linechart" style="margin:20px; height: 300px; max-width: 70vw;">
+    @* TODO form to switch graph *@
+    <div id="linechart" style="margin: 20px auto; height: 500px; text-align: center; max-width: 75vw;">
 
     </div>
 
-    <div id="multiBarChart" style="margin:20px; height: 300px; max-width: 70vw;">
+    <div id="multiBarChart" style="margin: 20px auto; height: 500px; text-align: center; max-width: 75vw; ">
 
     </div>
 
     <div id="tableContainer">
+        @* Listview of all questions: q# | Question Text| Correct Answer| diff | disc |*@
+        <div id="dataTable" class="float_child">
+            @{
+                IEnumerable<VisualiserWebProject.Models.TestQuestion> testQuestions = ViewData["TestQuestions"] as IEnumerable<VisualiserWebProject.Models.TestQuestion>;
+                int i = 1;
+            }
+            <table class="table">
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Question
+                    </th>
+                    <th>
+                        Total Responses
+                    </th>
+                    <th>
+                        Correct Responses
+                    </th>
+                    <th>
+                        Difficulty Index
+                    </th>
+                    <th>
+                        Discrimination Index
+                    </th>
+                    <th>
+                        View Details
+                    </th>
+                </tr>
 
+                @foreach (var item in testQuestions)
+                {                    
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Question.qText)
+                        </td>
+                        <td>
+                            @item.questionCount()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.correctSelected)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.difficultyIndex)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.discriminationIndex)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Visualise", "Details", new { Tid = item.TestID, Qid = item.QuestionID })
+                        </td>
+                    </tr>
+                    i++;
+                }
+
+            </table>
+        </div>
     </div>
 </div>
 
 <style>
+    th {
+        padding-right: 15px
+    }
+
     #topMiniDash {
         display: flex;
+        justify-content: center;
     }
 
     .float_child {
@@ -80,6 +138,10 @@
     #attempts {
         max-block-size: 100%;
         object-fit: contain;
+    }
+
+    canvas {
+        margin: 0 auto;
     }
 </style>
 
@@ -109,11 +171,13 @@
             axisY2: {
                 interlacedColor: "rgba(1,77,101,.2)",
                 gridColor: "rgba(1,77,101,.1)",
-                title: "Number of Attemps"
+                title: "Number of Attemps",
+                minimum: 0
+
             },
             data: [{
                 type: "bar",
-                name: "companies",
+                name: "attempts",
                 axisYType: "secondary",
                 color: "#10cdb0",
                 dataPoints: [
@@ -175,7 +239,7 @@
                 cursor: "pointer",
                 verticalAlign: "top",
                 horizontalAlign: "center",
-                dockInsidePlotArea: true,
+                dockInsidePlotArea: false,
                 itemclick: toggleDataSeries
             },
             data: [{

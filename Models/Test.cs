@@ -37,8 +37,11 @@ namespace VisualiserWebProject.Models
         public string testType { get; set; }
 
         //Set in MainController.ReadTestFile
+        [Display(Name = "Total Attempts:")]
         public int totalAttempts { get; set; }
+        [Display(Name = "Unique Attempts:")]
         public int uniqueAttempts { get; set; }
+        [Display(Name = "Average Mark:")]
         public decimal averageMark { get; set; }
 
         //Annotation - Display Name, Required, Input String Length
