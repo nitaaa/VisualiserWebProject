@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,9 +17,31 @@ namespace VisualiserWebProject.Controllers
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
 
         // GET: Tests
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : ""; 
+            ViewBag.CodeSortParm = sortOrder == "Code" ? "code_desc" : "Code";
+
             var tests = db.Tests.Include(t => t.Module).Include(t => t.User);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tests = tests.Where(s => s.testTitle.Contains(searchString) || s.Module.moduleCode.Contains(searchString) || s.testType.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "code_desc":
+                    tests = tests.OrderByDescending(s => s.Module.moduleCode);
+                    break;
+                case "Code":
+                    tests = tests.OrderBy(s => s.Module.moduleCode);
+                    break;
+                case "name_desc":
+                    tests = tests.OrderByDescending(s => s.testTitle);
+                    break;
+                default:
+                    tests = tests.OrderBy(s => s.testTitle);
+                    break;
+            }
             return View(tests.ToList());
         }
 

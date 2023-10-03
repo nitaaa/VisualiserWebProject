@@ -6,13 +6,23 @@
 
 <h2>All Tests</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code or name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.testTitle)
+            @Html.ActionLink("Module Code: ", "Index", new { sortOrder = ViewBag.CodeSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Test Title: ", "Index", new { sortOrder = ViewBag.TitleSortParm })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.testType)
@@ -27,16 +37,10 @@
             @Html.DisplayNameFor(model => model.averageMark)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.testMark)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.testDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.uploadDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Module.moduleCode)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.User)
@@ -46,6 +50,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Module.moduleCode)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.testTitle)
         </td>
@@ -62,16 +69,10 @@
             @Html.DisplayFor(modelItem => item.averageMark)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.testMark)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.testDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.uploadDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Module.moduleCode)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.userFirstName) @Html.DisplayFor(modelItem => item.User.userLastName)

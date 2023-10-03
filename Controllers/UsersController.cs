@@ -74,7 +74,7 @@ namespace VisualiserWebProject.Controllers
             {
                 db.Users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard", "Main");
             }
 
             return View(user);
@@ -185,7 +185,7 @@ namespace VisualiserWebProject.Controllers
                 if (ValidateUser(user.emailAddress, user.password))
                 {
                     FormsAuthentication.SetAuthCookie(user.emailAddress, true);                    
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Dashboard", "Main");
                 }
                 else
                 {

@@ -204,7 +204,7 @@ namespace VisualiserWebProject.Controllers
             //total attempts
             //unique attempts
             currentTest.totalAttempts = currentFile.Count();
-            currentTest.uniqueAttempts = currentFile.Distinct().Count();
+            currentTest.uniqueAttempts = currentFile.Select(x => x.StudentID).Distinct().Count(); //changed
             currentTest.uploadDate = DateTime.Now;
             currentTest.averageMark = decimal.Parse("0.0");
 
@@ -290,7 +290,7 @@ namespace VisualiserWebProject.Controllers
             upper27 = studentResponses.OrderByDescending(o => int.Parse(o.Mark)).Take(p27).ToList();
             //get lower 27%
             lower27 = studentResponses.OrderBy(o => int.Parse(o.Mark)).Take(p27).ToList();
-            double averageMark = totalmarks / currentTest.totalAttempts;
+            double averageMark = (totalmarks / currentTest.totalAttempts) /  maxMark * 100; // changed
             foreach (TestQuestion testQuestion in TestQuestions)
             {
                 int questionCount = testQuestion.questionCount();
@@ -315,7 +315,7 @@ namespace VisualiserWebProject.Controllers
                     lower27Correct += sQuestions.Where(o => o.isCorrect()).Count();
                 }
 
-                discriminationIndex = ((double)(upper27Correct - lower27Correct)) / (double)questionCount;
+                discriminationIndex = ((double)(upper27Correct - lower27Correct)) / questionCount;
                 testQuestion.difficultyIndex = Decimal.Parse(difficultyIndex.ToString());
                 testQuestion.discriminationIndex = Decimal.Parse(discriminationIndex.ToString());
                 testQuestion.markAllocation = 1;
@@ -342,7 +342,7 @@ namespace VisualiserWebProject.Controllers
 
                 throw;
             }
-            return RedirectToAction("Dashboard"); //TODO: Update to correct page
+            return RedirectToAction("TestDashboard","Tests", new { id = currentTest.TestID }); //TODO: Update to correct page
         }
 
         //Add Test To DB

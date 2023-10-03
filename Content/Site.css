@@ -135,5 +135,6 @@ textarea {
 
 .full-length-div:has(> ._background) {
     height: auto;
+    width: auto;
     background-color: #a6a6a660;
 }
