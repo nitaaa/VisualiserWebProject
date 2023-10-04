@@ -133,7 +133,7 @@ textarea {
     display: inline-flex;
 }
 
-.full-length-div:has(> ._background) {
+.full-length-div-body:has(> ._background) {
     height: auto;
     width: auto;
     background-color: #a6a6a660;

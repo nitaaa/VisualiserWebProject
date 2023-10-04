@@ -10,7 +10,7 @@
     @using (Html.BeginForm())
     {
         <p>
-            Find by module code or name: @Html.TextBox("SearchString")
+            Find by module code or test name: @Html.TextBox("SearchString")
             <input type="submit" value="Search" />
         </p>
     }
@@ -79,7 +79,7 @@
         </td>
         <td>
             @Html.ActionLink("Dashboard", "TestDashboard", new { id = item.TestID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.TestID }) |
+            @Html.ActionLink("Details", "Index", "TestQuestions", new { id = item.TestID}, null) |
             @Html.ActionLink("Delete", "Delete", new { id = item.TestID })
         </td>
     </tr>

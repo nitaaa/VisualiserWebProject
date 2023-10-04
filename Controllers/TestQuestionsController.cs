@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ using System.Web;
 using System.Web.Mvc;
 using VisualiserWebProject.Models;
 using static NPOI.HSSF.Util.HSSFColor;
+using static System.Net.Mime.MediaTypeNames;
 //using EntityState = System.Data.EntityState;
 
 namespace VisualiserWebProject.Controllers
@@ -25,11 +27,61 @@ namespace VisualiserWebProject.Controllers
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
 
         // GET: TestQuestions
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, int? id)
         {
-            
             var testQuestions = db.TestQuestions.Include(t => t.Question).Include(t => t.Test).Include(t => t.Test.Module);
-            
+            if (id != null)
+            {
+                testQuestions = testQuestions.Where(t => t.Test.TestID == id);
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                testQuestions = testQuestions.Where(s => s.Test.testTitle.Contains(searchString) || s.Test.Module.moduleCode.Contains(searchString) || s.Question.qText.Contains(searchString));
+            }
+
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.CodeSortParm = sortOrder == "Code" ? "code_desc" : "Code";
+            ViewBag.QuestionSortParam = sortOrder == "QText" ? "qtext_desc" : "QText";
+            ViewBag.DiffSortParam = sortOrder == "Diff" ? "Diff_desc" : "Diff";
+            ViewBag.DiscSortParam = sortOrder == "Disc" ? "Disc_desc" : "Disc";
+
+            switch (sortOrder)
+            {
+                
+                case "Name":
+                    testQuestions = testQuestions.OrderBy(s => s.Test.testTitle);
+                    break;
+                case "name_desc":
+                    testQuestions = testQuestions.OrderByDescending(s => s.Test.testTitle);
+                    break;
+                case "QText":
+                    testQuestions = testQuestions.OrderBy(s => s.Question.qText);
+                    break;
+                case "qtext_desc":
+                    testQuestions = testQuestions.OrderByDescending(s => s.Question.qText);
+                    break;
+                case "Diff":
+                    testQuestions = testQuestions.OrderBy(s => s.difficultyIndex);
+                    break;
+                case "Diff_desc":
+                    testQuestions = testQuestions.OrderByDescending(s => s.difficultyIndex);
+                    break;
+                case "Disc":
+                    testQuestions = testQuestions.OrderBy(s => s.discriminationIndex);
+                    break;
+                case "Disc_desc":
+                    testQuestions = testQuestions.OrderByDescending(s => s.discriminationIndex);
+                    break;
+                case "code_desc":
+                    testQuestions = testQuestions.OrderByDescending(s => s.correctSelected);
+                    break;
+                default:
+                    testQuestions = testQuestions.OrderBy(s => s.Test.Module.moduleCode);
+                    break;
+            }
+
+
             return View(testQuestions.ToList());
         }
 

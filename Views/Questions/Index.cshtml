@@ -6,13 +6,21 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code or name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>
+
+<table class="table, _background">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.qText)
+            @Html.ActionLink("Questions: ", "Index", new { sortOrder = ViewBag.NameSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.qCorrectAnswer)

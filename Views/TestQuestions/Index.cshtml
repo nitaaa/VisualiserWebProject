@@ -7,19 +7,26 @@
 <h2>All Test Questions</h2>
 
 <div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code, test name or question: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
 
 </div>
 
 <table class="table, _background">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Test.Module.moduleCode)
+            @Html.ActionLink("Module Code: ", "Index", new { sortOrder = ViewBag.CodeSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Test.testTitle)
+            @Html.ActionLink("Test Title: ", "Index", new { sortOrder = ViewBag.NameSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Question.qText)
+            @Html.ActionLink("Question: ", "Index", new { sortOrder = ViewBag.QuestionSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.correctSelected)
@@ -34,10 +41,10 @@
             @Html.DisplayNameFor(model => model.qD3Selected)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.difficultyIndex)
+            @Html.ActionLink("Difficulty Index: ", "Index", new { sortOrder = ViewBag.DiffSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.discriminationIndex)
+            @Html.ActionLink("Discrimination Index: ", "Index", new { sortOrder = ViewBag.DiscSortParam })
         </th>
         <th></th>
     </tr>
