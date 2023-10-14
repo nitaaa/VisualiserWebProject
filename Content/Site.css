@@ -134,7 +134,7 @@ textarea {
 }
 
 .full-length-div-body:has(> ._background) {
-    height: auto;
-    width: auto;
+    /*height: auto;
+    max-width: 70vw;*/
     background-color: #a6a6a660;
 }

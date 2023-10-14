@@ -169,9 +169,15 @@ namespace VisualiserWebProject.Controllers
             List<TestQuestion> testQuestions = db.TestQuestions.Where(x => x.TestID == test.TestID).ToList();
             ViewBag.TestQuestions = testQuestions;
 
+            double diff = 0;
+            foreach (TestQuestion tq in testQuestions)
+            {
+                diff += Decimal.ToDouble(tq.difficultyIndex);
+            }
+            diff = diff/testQuestions.Count;
 
-
-            ViewBag.PercentPassed = ((double)test.testMark / test.totalAttempts).ToString() + "%";
+            
+            ViewBag.PercentPassed = (Math.Round(diff*100,2)).ToString() + "%"; //average difficulty
             ViewBag.AveragePercent = (test.averageMark).ToString() + "%";
 
 

@@ -9,15 +9,7 @@
 <div id="testDashContainer" class="_background" >
     <div id="topMiniDash">
         <div id="marks" class=".float_child" style="margin: 20px; padding: 10px; width: 35vw; background-color:white">
-            <div id="passPercent" style="max-width: 80%;">
-                <p>Number of Students who Passed: (@Model.testMark) @ViewBag.PercentPassed</p>
-                <div class="bar-contain">
-                    <div class="bar-percent" style="width: @ViewBag.PercentPassed">
 
-                    </div>
-                </div>
-            </div>
-            <hr />
             <div id="averageMark" style="max-width: 80%">
                 <p>Average Mark: @Model.averageMark%</p>
                 <div class="bar-contain">
@@ -26,6 +18,16 @@
                     </div>
                 </div>
             </div>
+            <hr />
+            <div id="passPercent" style="max-width: 80%;">
+                <p>Average Question Difficulty: @ViewBag.PercentPassed</p>
+                <div class="bar-contain">
+                    <div class="bar-percent" style="width: @ViewBag.PercentPassed">
+
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div id="attempts" class=".float_child" style="height: 300px; margin: 20px; width: 35vw; ">
 
@@ -94,7 +96,7 @@
                             @Html.DisplayFor(modelItem => item.discriminationIndex)
                         </td>
                         <td>
-                            @Html.ActionLink("Visualise", "Details", new { Tid = item.TestID, Qid = item.QuestionID }) |
+                            @Html.ActionLink("Visualise", "Details", "TestQuestions", new { Tid = item.TestID, Qid = item.QuestionID }, null) |
                             @Html.ActionLink("Details", "Index", "TestQuestions", new { id = item.TestID }, null)
                         </td>
                     </tr>
