@@ -100,8 +100,10 @@ namespace VisualiserWebProject.Controllers
             var jLabels = JsonConvert.SerializeObject(labels);
             var jdata = JsonConvert.SerializeObject(data);
 
-            ViewBag.DifInd = (testQuestion.difficultyIndex * 100).ToString() + "%";
-            ViewBag.DiscInd = (testQuestion.discriminationIndex * 100).ToString() + "%";
+            string DifInd = (testQuestion.difficultyIndex * 100).ToString().Replace(",", ".");
+            string DiscInd = (testQuestion.discriminationIndex * 100).ToString().Replace(",", ".");
+            ViewBag.DifInd = DifInd + "%";
+            ViewBag.DiscInd = DiscInd + "%";
             // Difficulty Index:
             // 0.95 - 1.0 = Too easy(not doing much good to differentiate examinees, which is really the purpose of assessment)
             // 0.60 - 0.95 = Typical

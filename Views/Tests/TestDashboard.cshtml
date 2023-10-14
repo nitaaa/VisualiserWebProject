@@ -94,7 +94,7 @@
                             @Html.DisplayFor(modelItem => item.discriminationIndex)
                         </td>
                         <td>
-                            @Html.ActionLink("Visualise", "Details", new { Tid = item.TestID, Qid = item.QuestionID }) |
+                            @Html.ActionLink("Visualise", "Details", "TestQuestions", new { Tid = item.TestID, Qid = item.QuestionID }, null) |
                             @Html.ActionLink("Details", "Index", "TestQuestions", new { id = item.TestID }, null)
                         </td>
                     </tr>

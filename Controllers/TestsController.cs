@@ -171,8 +171,9 @@ namespace VisualiserWebProject.Controllers
 
 
 
-            ViewBag.PercentPassed = ((double)test.testMark / test.totalAttempts).ToString() + "%";
-            ViewBag.AveragePercent = (test.averageMark).ToString() + "%";
+            ViewBag.PercentPassed = (((double)test.testMark / test.totalAttempts)/100).ToString() + "%";
+            string average = test.averageMark.ToString().Replace(",", ".");
+            ViewBag.AveragePercent = average +  "%";
 
 
             string[] labels = { "Total Attempts", "Unique Attemps" };
