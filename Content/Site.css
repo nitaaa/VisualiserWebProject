@@ -1,12 +1,13 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background-color: #a6a6a660;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -39,4 +40,101 @@ textarea {
 
 .quick-link {
     display: block;
+}
+
+.full-length-div {
+    height: 90vh;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+#head-info {
+    height: 10vh;
+    /*width: 100vw;*/
+    /*display: flex;*/
+}
+
+#imgContainer {
+    height: 100%;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    /* flex: 1;*/
+}
+
+#logo {
+    max-block-size: 100%;
+    object-fit: contain;
+}
+
+#userInfo {
+    height: 100%;
+    display: flex;
+    padding-top: 30px;
+    align-items: start;
+    justify-content: end;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+
+/*header buttons*/
+.imgBtn {
+    padding: 10px 10px;
+    margin-right: 20px;
+    background-color: #cd9fe7; /* purple in icon */
+    color: #33283a; 
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #675074;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    .imgBtn:hover {
+        text-decoration: none;
+        background-color: #9a77ad;
+        color: #33283a;
+    }
+
+    .imgBtn:active {
+        transform: scale(0.95);
+        background-color: #675074;
+        color: #33283a;
+    }
+
+    .imgBtn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* box-shadow */
+        color: #33283a;
+    }
+
+.navTable td {
+    padding: 10px 15px;
+
+}
+
+.navTable tr:hover {
+    font-weight: bold;
+    background-color: #9a77ad40;
+    color: #33283a;
+}
+
+#topMiniDash{
+    display: inline-flex;
+}
+
+.full-length-div-body:has(> ._background) {
+    /*height: auto;
+    max-width: 70vw;*/
+    background-color: #a6a6a660;
 }

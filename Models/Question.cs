@@ -66,7 +66,7 @@ namespace VisualiserWebProject.Models
         {
             bool response = true;
             this.toList();
-            Question q2 = obj as Question;
+            Question q2 = (Question)obj;
             q2.toList();
             if (qText == q2.qText && qCorrectAnswer == q2.qCorrectAnswer)
             {
@@ -74,7 +74,8 @@ namespace VisualiserWebProject.Models
                 {
                     if (!this.AllDistractors.Contains(s)) response = false;
                 }
-            }
+            } else
+                response = false;
             return response;
         }
     }

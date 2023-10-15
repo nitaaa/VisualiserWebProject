@@ -1,0 +1,89 @@
+﻿@model IEnumerable<VisualiserWebProject.Models.TestQuestion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Test Questions</h2>
+
+<div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code, test name or question: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>
+
+<table class="table, _background">
+    <tr>
+        <th>
+            @Html.ActionLink("Module Code: ", "Index", new { sortOrder = ViewBag.CodeSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Test Title: ", "Index", new { sortOrder = ViewBag.NameSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Question: ", "Index", new { sortOrder = ViewBag.QuestionSortParam })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.correctSelected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD1Selected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD2Selected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qD3Selected)
+        </th>
+        <th>
+            @Html.ActionLink("Difficulty Index: ", "Index", new { sortOrder = ViewBag.DiffSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Discrimination Index: ", "Index", new { sortOrder = ViewBag.DiscSortParam })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Test.Module.moduleCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Test.testTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.qText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.correctSelected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD1Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD2Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qD3Selected)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.difficultyIndex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.discriminationIndex)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { Tid = item.TestID, Qid = item.QuestionID }) |*@
+            @Html.ActionLink("Visualise", "Details", new { Tid = item.TestID, Qid = item.QuestionID }) 
+            @*@Html.ActionLink("Delete", "Delete", new { Tid = item.TestID, Qid = item.QuestionID })*@
+        </td>
+    </tr>
+}
+
+</table>

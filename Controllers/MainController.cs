@@ -31,6 +31,7 @@ namespace VisualiserWebProject.Controllers
         private Test currentTest;
         private int maxMark;
         private int nrQuestions;
+        private int nrPassed;
 
         // GET: Main
         public ActionResult Dashboard()
@@ -77,7 +78,7 @@ namespace VisualiserWebProject.Controllers
             int columnNumber = 0;
             List<string> columns = new List<string>();
             List<TestFileHelper> testReport = new List<TestFileHelper>();
-
+            nrPassed = 0;
             //Using the Excel Data Reader Package
             //FileStream stream = new FileStream(inputFile.FileName, FileMode.Open,FileAccess.Read);
             using (Stream stream = inputFile.InputStream) //System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
@@ -123,7 +124,10 @@ namespace VisualiserWebProject.Controllers
                                 columnNumber++;
                                 testline.Mark = reader.GetString(columnNumber);
                                 columnNumber++;
-
+                                if (double.Parse(testline.Mark)/maxMark >= 0.5)
+                                {
+                                    nrPassed++;
+                                }
                                 testline.QuestionResult = new List<QuestionResponseFileHelper>();
                                 //for the remainder of the columns, the format will be
                                 //|Question n|Student Response n|Correct Response n|
@@ -136,7 +140,11 @@ namespace VisualiserWebProject.Controllers
                                     columnNumber++;
                                     qrsf.CorrectResponse = reader.GetString(columnNumber);
                                     columnNumber++;
-                                    qrsf.setAnswers(); //Data Cleaning
+
+                                    if (qrsf.isValid())
+                                    {
+                                        qrsf.setAnswers(); //Data Cleaning
+                                    }
                                     testline.QuestionResult.Add(qrsf);
                                 }
                                 testReport.Add(testline);
@@ -149,6 +157,7 @@ namespace VisualiserWebProject.Controllers
 
                 }
             }
+            TempData["Passed"] = nrPassed;
             nrQuestions = testReport.First().QuestionResult.Count;
             return testReport;
 
@@ -189,14 +198,13 @@ namespace VisualiserWebProject.Controllers
             nrQuestions = (int)TempData["nrQuestions"];
 
             currentTest = (Test)TempData["currentTest"];
-            currentTest.uniqueAttempts = currentFile.Distinct().Count(); //select distinct based on student ID
             currentTest.testMark = maxMark;
             currentTest.assessor = int.Parse(Request.Cookies["userID"].Value);
 
             //total attempts
             //unique attempts
             currentTest.totalAttempts = currentFile.Count();
-            currentTest.uniqueAttempts = currentFile.Distinct().Count();
+            currentTest.uniqueAttempts = currentFile.Select(x => x.StudentID).Distinct().Count(); //changed
             currentTest.uploadDate = DateTime.Now;
             currentTest.averageMark = decimal.Parse("0.0");
 
@@ -204,7 +212,7 @@ namespace VisualiserWebProject.Controllers
             //average mark
             double totalmarks = 0;
             List<Question> tQuestions = new List<Question>();
-            List<TestQuestion> TestQuestions = new List<TestQuestion>();
+            List<TestQuestion> TestQuestions = new List<TestQuestion>();            
 
             foreach (TestFileHelper line in currentFile)
             {
@@ -215,6 +223,12 @@ namespace VisualiserWebProject.Controllers
                 Question dbQ;
                 foreach (QuestionResponseFileHelper qr in allQ)
                 {
+                    List<Question> dbQuestions = db.Questions.ToList();
+                    if (!qr.isValid())
+                    {
+                        continue;
+                    }
+                    curQ = new Question();
                     curQ.qText = qr.QuestionText;
                     curQ.qCorrectAnswer = qr.CorrectResponse;
                     string[] dist = qr.getDistractors();
@@ -223,14 +237,15 @@ namespace VisualiserWebProject.Controllers
                     curQ.qDistractor3 = dist[2];
 
                     //check if new question in DB
-                    if (db.Questions.Any(o => o.Equals(curQ)))
+                    if (dbQuestions.Any(o => o.Equals(curQ)))
                     {
                         //not new question - retrieve from DB
-                        dbQ = db.Questions.Where(o => o.Equals(curQ)).FirstOrDefault();
+                        dbQ = dbQuestions.Where(o => o.Equals(curQ)).FirstOrDefault();
                     } else
                     {
                         //new question - add to DB
                         dbQ = addQuestionToDB(curQ);
+                        dbQuestions.Add(dbQ);
                     }
 
                     //check if unique question in test
@@ -242,7 +257,7 @@ namespace VisualiserWebProject.Controllers
                     } else
                     {
                         //exists in TestQuestions
-                        tq = TestQuestions.Where(o => o.QuestionID == curQ.QuestionID).FirstOrDefault();
+                        tq = TestQuestions.Where(o => o.QuestionID == dbQ.QuestionID).FirstOrDefault();
                     }
 
                     if (qr.isCorrect())
@@ -250,13 +265,13 @@ namespace VisualiserWebProject.Controllers
                     else
                     {
                         //distractor increment
-                        if (qr.StudentResponse == dbQ.qDistractor1)
+                        if (qr.StudentResponse.Equals(dbQ.qDistractor1.Trim()))
                         {
                             tq.qD1Selected++;
-                        } else if (qr.StudentResponse == dbQ.qDistractor2)
+                        } else if (qr.StudentResponse.Equals(dbQ.qDistractor2.Trim()))
                         {
                             tq.qD2Selected++;
-                        } else if (qr.StudentResponse == dbQ.qDistractor3)
+                        } else if (qr.StudentResponse.Equals(dbQ.qDistractor3.Trim()))
                         {
                             tq.qD3Selected++;
                         }
@@ -275,38 +290,59 @@ namespace VisualiserWebProject.Controllers
             upper27 = studentResponses.OrderByDescending(o => int.Parse(o.Mark)).Take(p27).ToList();
             //get lower 27%
             lower27 = studentResponses.OrderBy(o => int.Parse(o.Mark)).Take(p27).ToList();
-            double averageMark = totalmarks / currentTest.totalAttempts;
+            double averageMark = (totalmarks / currentTest.totalAttempts) /  maxMark * 100; // changed
             foreach (TestQuestion testQuestion in TestQuestions)
             {
                 int questionCount = testQuestion.questionCount();
-                decimal difficultyIndex = testQuestion.correctSelected/questionCount;
-                decimal discriminationIndex = 0;
+                double difficultyIndex = (double)testQuestion.correctSelected/(double)questionCount;
+                double discriminationIndex = 0;
                 int upper27Correct = 0;
                 int lower27Correct = 0;
+                Question question;
                 //using currentFile to get the top 27% of student and nr correct 
                 //and  ^^^     bottom      ^^^
                 foreach (TestFileHelper student in upper27)
                 {
-                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
-                    upper27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                    testQuestion.Question = db.Questions.Where(obj => obj.QuestionID == testQuestion.QuestionID).FirstOrDefault();
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.isValid() && ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    upper27Correct += sQuestions.Where(o => o.isCorrect()).Count();
                 }
 
                 foreach (TestFileHelper student in lower27)
                 {
-                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.asQuestion().Equals(testQuestion.Question)).ToList();
-                    lower27Correct = sQuestions.Where(o => o.isCorrect()).Count();
+                    testQuestion.Question = db.Questions.Where(obj => obj.QuestionID == testQuestion.QuestionID).FirstOrDefault();
+                    List<QuestionResponseFileHelper> sQuestions = student.QuestionResult.Where(ob => ob.isValid() && ob.asQuestion().Equals(testQuestion.Question)).ToList();
+                    lower27Correct += sQuestions.Where(o => o.isCorrect()).Count();
                 }
 
-                discriminationIndex = (upper27Correct - lower27Correct) / questionCount;
-                testQuestion.difficultyIndex = difficultyIndex;
-                testQuestion.discriminationIndex = discriminationIndex;
+                discriminationIndex = ((double)(upper27Correct - lower27Correct)) / questionCount;
+                testQuestion.difficultyIndex = Decimal.Parse(difficultyIndex.ToString());
+                testQuestion.discriminationIndex = Decimal.Parse(discriminationIndex.ToString());
                 testQuestion.markAllocation = 1;
 
-
                 addTestQuestionToDB(testQuestion);
-            }     
+            }
             #endregion
-            return RedirectToAction("Dashboard"); //TODO: Update to correct page
+
+
+            //YOU MADE CHANGES - testMark now NRPASSED
+            currentTest.averageMark = (Decimal)averageMark;
+            currentTest.testMark = (int)TempData["Passed"];
+            try
+            {
+                currentTest.File = (HttpPostedFileBase)TempData["TestFileXSLX"];
+                if (ModelState.IsValid)
+                {
+                    db.Entry(currentTest).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return RedirectToAction("TestDashboard","Tests", new { id = currentTest.TestID }); //TODO: Update to correct page
         }
 
         //Add Test To DB

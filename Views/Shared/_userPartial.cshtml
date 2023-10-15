@@ -1,0 +1,45 @@
+﻿@if (@Request.Cookies["username"] != null)
+{
+    var name = Request.Cookies["username"].Value;
+    <p>Hello @name</p>
+}
+else
+{
+<div>
+    <a class="imgBtn" href="@Url.Action("Register","Users")">
+        <img style="max-inline-size: 24px" src="~/Content/Images/Icons/add-user.png" /> Register
+    </a>
+    <a class="imgBtn" href="@Url.Action("Login","Users")">
+        <img style="max-inline-size: 24px" src="~/Content/Images/Icons/log-in.png" /> Log In
+    </a>
+</div>
+}
+<!--if (Request.Cookies["username"].Value != null)
+{-->
+@*<form asp-area="Identity" asp-page="/Account/Logout" asp-route
+          returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post"
+          id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index"
+                   title="Manage">Hello !</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-
+                    link">
+                    Logout
+                </button>
+            </li>
+        </ul>
+    </form>*@
+<!--}
+else
+{
+<a href="@Url.Action("Register","Users")">
+    <img src="~/Content/Images/Icons/icons8-register-16.png" /> Register
+</a>
+<br />
+<a href="@Url.Action("Login","Users")">
+    <img src="~/Content/Images/Icons/log-in.png" /> Log In
+</a>
+}-->

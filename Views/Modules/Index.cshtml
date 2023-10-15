@@ -9,19 +9,28 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code or name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.moduleCode)
+            @Html.ActionLink("Module Code: ","Index", new { sortOrder = ViewBag.CodeSortParm})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.moduleName)
+            @Html.ActionLink("Module Name:", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.archived)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.userFirstName)
+            Lecturer:
         </th>
         <th></th>
     </tr>
@@ -35,10 +44,7 @@
             @Html.DisplayFor(modelItem => item.moduleName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.archived)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.userFirstName)
+            @Html.DisplayFor(modelItem => item.User.userFirstName) @Html.DisplayFor(modelItem =>item.User.userLastName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ModuleID }) |

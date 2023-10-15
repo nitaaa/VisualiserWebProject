@@ -1,0 +1,352 @@
+﻿@model VisualiserWebProject.Models.Test
+
+@{
+    ViewBag.Title = "Test Dashboard";
+}
+
+<h1>@Model.Module.moduleCode - @Model.testTitle</h1>
+
+<div id="testDashContainer" class="_background" >
+    <div id="topMiniDash">
+        <div id="marks" class=".float_child" style="margin: 20px; padding: 10px; width: 35vw; background-color:white">
+
+            <div id="averageMark" style="max-width: 80%">
+                <p>Average Mark: @Model.averageMark%</p>
+                <div class="bar-contain">
+                    <div class="bar-percent" style="width: @ViewBag.AveragePercent">
+
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div id="passPercent" style="max-width: 80%;">
+                <p>Average Question Difficulty: @ViewBag.PercentPassed</p>
+                <div class="bar-contain">
+                    <div class="bar-percent" style="width: @ViewBag.PercentPassed">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="attempts" class=".float_child" style="height: 300px; margin: 20px; width: 35vw; ">
+
+        </div>
+    </div>
+    @* TODO form to switch graph *@
+    <div id="linechart" style="margin: 20px auto; height: 500px; text-align: center; max-width: 75vw;">
+
+    </div>
+
+    <div id="multiBarChart" style="margin: 20px auto; height: 500px; text-align: center; max-width: 75vw; ">
+
+    </div>
+
+    <div id="tableContainer">
+        @* Listview of all questions: q# | Question Text| Correct Answer| diff | disc |*@
+        <div id="dataTable" class="float_child">
+            @{
+                IEnumerable<VisualiserWebProject.Models.TestQuestion> testQuestions = ViewData["TestQuestions"] as IEnumerable<VisualiserWebProject.Models.TestQuestion>;
+                int i = 1;
+            }
+            <table class="table">
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Question
+                    </th>
+                    <th>
+                        Total Responses
+                    </th>
+                    <th>
+                        Correct Responses
+                    </th>
+                    <th>
+                        Difficulty Index
+                    </th>
+                    <th>
+                        Discrimination Index
+                    </th>
+                    <th>
+                        View Details
+                    </th>
+                </tr>
+
+                @foreach (var item in testQuestions)
+                {                    
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Question.qText)
+                        </td>
+                        <td>
+                            @item.questionCount()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.correctSelected)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.difficultyIndex)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.discriminationIndex)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Visualise", "Details", "TestQuestions", new { Tid = item.TestID, Qid = item.QuestionID }, null) |
+                            @Html.ActionLink("Details", "Index", "TestQuestions", new { id = item.TestID }, null)
+                        </td>
+                    </tr>
+                    i++;
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    th {
+        padding-right: 15px
+    }
+
+    #topMiniDash {
+        display: flex;
+        justify-content: center;
+    }
+
+    .float_child {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .bar-contain {
+        margin: 20px;
+        margin-top: 0px;
+        width: 100%;
+        height: 20px;
+        border-radius: 5px;
+        background-color: #c3f3eb;
+    }
+
+    .bar-percent {
+        height: 20px;
+        border-radius: 5px;
+        background-color: #10cdb0;
+    }
+
+    #attempts {
+        max-block-size: 100%;
+        object-fit: contain;
+    }
+
+    canvas {
+        margin: 0 auto;
+    }
+</style>
+
+<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+<script src="https://cdn.canvasjs.com/ga/canvasjs.stock.min.js"></script>
+<script>
+    window.onload = function () {
+        var datay = [];
+            var array = @ViewBag.AttemptsData;
+            for(var i = 0; i < array.length; i++) {
+                datay[i] = array[i];
+            }
+
+            var labels = [];
+            array = @Html.Raw(@ViewBag.AttemptsLabels);
+            for (var i = 0; i < array.length; i++) {
+                labels[i] = array[i];
+            }
+        var chart1 = new CanvasJS.Chart("attempts", {
+            animationEnabled: true,
+            title: {
+                text: ""
+            },
+            axisX: {
+                interval: 1
+            },
+            axisY2: {
+                interlacedColor: "rgba(1,77,101,.2)",
+                gridColor: "rgba(1,77,101,.1)",
+                title: "Number of Attemps",
+                minimum: 0
+
+            },
+            data: [{
+                type: "bar",
+                name: "attempts",
+                axisYType: "secondary",
+                color: "#10cdb0",
+                dataPoints: [
+                    { y: datay[0], label: labels[0] },
+                    { y: datay[1], label: labels[1] }
+                ]
+            }]
+        });
+
+        //problem here - solved ..? mayhaps
+        var qlabels = [];
+        array = @Html.Raw(@ViewBag.QuestionNr);
+        for(var i = 0; i < array.length; i++) {
+           qlabels[i] = array[i];
+        }
+
+        var dp1 = [];
+        array = @ViewBag.LQDiff;
+        for(var i = 0; i < array.length; i++) {
+           dp1[i] = array[i];
+        }
+
+        var dp2 = [];
+        array = @ViewBag.LQDisc;
+        for(var i = 0; i < array.length; i++) {
+           dp2[i] = array[i];
+        }
+
+        var difArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: dp1[index]
+            };
+        });
+
+        var discArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: dp2[index]
+            };
+        });
+
+        //https://canvasjs.com/docs/charts/chart-options/data/datapoints/click/
+        var chart2 = new CanvasJS.Chart("linechart", {
+            title: {
+                text: "Difficulty and Discrimination Indices per Question"
+            },
+            axisX: {
+                title: "Question Number"
+            },
+            axisY2: {
+                title: "Percentage",
+                suffix: "%"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "top",
+                horizontalAlign: "center",
+                dockInsidePlotArea: false,
+                itemclick: toggleDataSeries
+            },
+            data: [{
+                type: "line",
+                color: "#cd9fe7",
+                axisYType: "secondary",
+                name: "Difficulty Index",
+                showInLegend: true,
+                markerSize: 0,
+                dataPoints: difArray
+            },
+            {
+                type: "line",
+                color: "#fdd362",
+                axisYType: "secondary",
+                name: "Discrimination Index",
+                showInLegend: true,
+                markerSize: 0,
+                dataPoints: discArray
+            },]
+        });
+
+        //arrays for total vs correct
+        var nratt = [];
+        array = @ViewBag.LNrAttemps;
+        for(var i = 0; i < array.length; i++) {
+            nratt[i] = array[i];
+        }
+
+        var nrcor = [];
+        array = @ViewBag.LNrCorrect;
+        for(var i = 0; i < array.length; i++) {
+            nrcor[i] = array[i];
+        }
+
+        var attArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: nratt[index]
+            };
+        });
+
+        var corArray = qlabels.map((value, index) => {
+            return {
+                x: value,
+                y: nrcor[index]
+            };
+        });
+        var chart3 = new CanvasJS.Chart("multiBarChart", {
+        animationEnabled: true,
+            title: {
+                text: "Total vs Correct Responses"
+        },
+        axisY: {
+            title: "Number of Responses"
+        },
+        toolTip: {
+            shared: true
+        },
+        legend: {
+            cursor: "pointer",
+            itemclick: toggleDataSeries3
+        },
+        data: [{
+            type: "column",
+            name: "Total Responses",
+            legendText: "Total Responses",
+            showInLegend: true,
+            color: "#fdd362",
+            dataPoints: attArray
+        },
+        {
+            type: "column",
+            name: "Correct Responses",
+            legendText: "Correct Responses",
+            showInLegend: true,
+            color: "#cd9fe7",
+            dataPoints: corArray
+        }]
+    });
+
+
+        chart1.render();
+        chart2.render();
+        chart3.render();
+
+        function toggleDataSeries(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            chart2.render();
+        }
+
+        function toggleDataSeries3(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            }
+            else {
+                e.dataSeries.visible = true;
+            }
+            chart3.render();
+        }
+
+    }
+</script>

@@ -1,0 +1,188 @@
+﻿@model VisualiserWebProject.Models.TestQuestion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 style="text-align:center">Question Information and Response Distribution</h2>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<h2>@Html.DisplayFor(model => model.Test.Module.moduleCode) - @Html.DisplayFor(model => model.Test.testTitle)</h2>
+<h3 style="font-weight: bold">Question: @Html.DisplayFor(model => model.Question.qText)</h3>
+<hr />
+
+<div id="wrapper" class="_background">
+    <div id="dataTable" class="float_child">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qCorrectAnswer)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qCorrectAnswer) (@Html.DisplayFor(model => model.correctSelected))
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor1)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor1) (@Html.DisplayFor(model => model.qD1Selected))
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor2)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor2) (@Html.DisplayFor(model => model.qD2Selected))
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Question.qDistractor3)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Question.qDistractor3) (@Html.DisplayFor(model => model.qD3Selected))
+            </dd>
+        </dl>
+    </div>
+    <div id="bars" class="float_child">
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.difficultyIndex)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.difficultyIndex)
+            </dd>
+        </dl>
+
+        <div id="difIndex" style="max-width: 80%">
+            <div class="bar-contain" style="background-color: @ViewBag.DifBGColor">
+                <div id="dif-bar-percent" style="width: @ViewBag.DifInd; background-color: @ViewBag.DifColor">
+
+                </div>
+            </div>
+            <p style="text-align: right; width:100%; padding-right: 10px">@ViewBag.Difficulty</p>
+            <a class="child">@ViewBag.Difficulty</a>
+        </div>
+
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.discriminationIndex)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.discriminationIndex)
+            </dd>
+
+        </dl>
+
+        <div id="discIndex" style="max-width: 80%">
+            <div class="bar-contain" style="background-color: @ViewBag.DiscBGColor">
+                <div id="disc-bar-percent" style="width: @ViewBag.DiscInd; background-color: @ViewBag.DiscColor">
+
+                </div>
+            </div>
+            <p style="text-align: right; width:100%; padding-right: 10px">@ViewBag.Discrimination</p>
+            <a class="child">@ViewBag.Discrimination</a>
+        </div>
+    </div>
+</div>
+<br />
+
+<div id="histogram">
+
+</div>
+
+
+<style>
+    #wrapper {
+        display: flex;
+    }
+
+    .float_child {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .child {
+        display: none;
+    }
+
+    .bar-contain {
+        margin: 20px;
+        margin-bottom: 0px;
+        width: 100%;
+        height: 20px;
+        border-radius: 5px;
+    }
+
+    #dif-bar-percent {
+        height: 20px;
+        border-radius: 5px;
+    }
+
+    #disc-bar-percent {
+        height: 20px;
+        border-radius: 5px;
+    }
+
+</style>
+
+<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+<script src="https://cdn.canvasjs.com/ga/canvasjs.stock.min.js"></script>
+<script>
+    window.onload = function () {
+            CanvasJS.addColorSet("fourBar",
+            [//colorSet Array
+
+                "#058610", //green
+                "#fdd362",
+                "#cd9fe7",
+                "#10cdb0"
+                ]);
+
+            var datay = [];
+            var array = @ViewBag.JData;
+            for(var i = 0; i < array.length; i++) {
+                datay[i] = array[i];
+            }
+
+            var labels = [];
+            array = @Html.Raw(@ViewBag.JLabels);
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] == 0 || array[i] == null) {
+                    array[i] = 0
+                } else {
+                    labels[i] = array[i];
+                }
+            }
+
+        var chart = new CanvasJS.Chart("histogram", {
+            colorSet: "fourBar",
+            animationEnabled: true,
+                //theme: "fourBar", // "light1", "light2", "dark1", "dark2"
+            title: {
+            text: " "
+            },
+            axisY: {
+            title: "Frequency of Selection"
+            },
+            data: [{
+            type: "column",
+                showInLegend: false,
+                //legendMarkerColor: "grey",
+                //legendText: "Number of Students",
+                dataPoints: [
+                    { y: datay[0], label: labels[0] },
+                    { y: datay[1], label: labels[1] },
+                    { y: datay[2], label: labels[2] },
+                    { y: datay[3], label: labels[3] }
+                ]
+            }]
+        });
+        chart.render();
+
+    }
+</script>

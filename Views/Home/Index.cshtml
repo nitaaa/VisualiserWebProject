@@ -2,30 +2,87 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
+<div class="jumbotron" style="padding-top: 5px; border-radius: 5px; margin-top: 5px">
+    <h1>Visualisation and Analysis of Quiz Responses</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p>
+        The difficulty is calculated as the proportion of students who got the question correct and the discrimination index by calculating
+        the number of students in the upper-scoring group who got the question correct versus those in the lower-scoring group who got the
+        question correct as a proportion. The guidelines for setting the threshold for the difficulty index and discrimination index are included below.
+    </p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h3>Difficulty Index</h3>
+        <table border="1" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Score Range</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0.95-1.0</td>
+                    <td>Too easy</td>
+                </tr>
+                <tr>
+                    <td>0.60-0.95</td>
+                    <td>Typical</td>
+                </tr>
+                <tr>
+                    <td>0.40-0.60</td>
+                    <td>Hard</td>
+                </tr>
+                <tr>
+                    <td>&lt;0.40</td>
+                    <td>Too hard</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2>Discrimination Index</h2>
+        <table border="1" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Score Range</th>
+                    <th>Evaluation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0.20+</td>
+                    <td>Good item; smarter examinees tend to get the item correct</td>
+                </tr>
+                <tr>
+                    <td>0.10-0.20</td>
+                    <td>OK item; but probably review it</td>
+                </tr>
+                <tr>
+                    <td>0.0-0.10</td>
+                    <td>Marginal item quality; should probably be revised or replaced</td>
+                </tr>
+                <tr>
+                    <td>&lt;0.0</td>
+                    <td>Terrible item; replace it</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2>Project Details</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            The use of the Design Science Research methodology split the research into a literature review, an interview with the
+            proposer of the project, and research into existing systems. After the research was conducted, the design and implementation
+            of an artefact to analyse and visualise data was done.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <p>
+            This artefact was evaluated using A/B testing against an existing system, the results of which showed a positive sentiment and
+            good usability for the artefact created and, from feedback, it was decided to be a suitable solution to the problem.
+        </p>
+        <p>Keywords: Moodle, Visualisation, Item Analysis, Web Design</p>
+        <p>ACM Computing Classification System category: Human-centered computing with specific regard to Empirical studies in visualization.</p>
     </div>
 </div>

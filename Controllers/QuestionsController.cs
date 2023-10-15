@@ -15,9 +15,25 @@ namespace VisualiserWebProject.Controllers
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
 
         // GET: Questions
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
-            return View(db.Questions.ToList());
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            var questions = db.Questions.Include(q => q.Topics);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                questions = questions.Where(s => s.qText.Contains(searchString) || s.qCorrectAnswer.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    questions = questions.OrderByDescending(s => s.qText);
+                    break;
+                default:
+                    questions = questions.OrderBy(s => s.qText);
+                    break;
+            }
+            return View(questions.ToList());
         }
 
         // GET: Questions/Details/5

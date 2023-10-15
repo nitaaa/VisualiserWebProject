@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,9 +16,39 @@ namespace VisualiserWebProject.Controllers
         private QuizVisualiserDatabaseEntities db = new QuizVisualiserDatabaseEntities();
 
         // GET: Modules
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, string filter)
         {
+            ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
             var modules = db.Modules.Include(m => m.User);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                modules = modules.Where(s => s.moduleName.Contains(searchString) || s.moduleCode.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(filter))
+            {
+                modules = db.Modules.Where(o => o.moduleCode == filter).Include(m => m.User);
+            }
+
+            switch (sortOrder)
+            {
+                case "code_desc":
+                    modules = modules.OrderByDescending(s => s.moduleCode);
+                    break;
+                case "Name":
+                    modules = modules.OrderBy(s => s.moduleName);
+                    break;
+                case "name_desc":
+                    modules = modules.OrderByDescending(s => s.moduleName);
+                    break;
+                default:
+                    modules = modules.OrderBy(s => s.moduleCode);
+                    break;
+            }
+            ViewBag.ModuleID = new SelectList(db.Modules, "ModuleID", "moduleCode");
+
             return View(modules.ToList());
         }
 

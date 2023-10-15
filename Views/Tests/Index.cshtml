@@ -4,15 +4,25 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>All Tests</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div id="searchSort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by module code or test name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.testTitle)
+            @Html.ActionLink("Module Code: ", "Index", new { sortOrder = ViewBag.CodeSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Test Title: ", "Index", new { sortOrder = ViewBag.TitleSortParm })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.testType)
@@ -33,16 +43,16 @@
             @Html.DisplayNameFor(model => model.uploadDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Module.moduleCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.userFirstName)
+            @Html.DisplayNameFor(model => model.User)
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Module.moduleCode)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.testTitle)
         </td>
@@ -65,15 +75,12 @@
             @Html.DisplayFor(modelItem => item.uploadDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Module.moduleCode)
+            @Html.DisplayFor(modelItem => item.User.userFirstName) @Html.DisplayFor(modelItem => item.User.userLastName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.userFirstName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TestID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TestID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TestID })
+            @Html.ActionLink("Dashboard", "TestDashboard", new { id = item.TestID }) |
+            @Html.ActionLink("Details", "Index", "TestQuestions", new { id = item.TestID}, null) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.TestID })
         </td>
     </tr>
 }

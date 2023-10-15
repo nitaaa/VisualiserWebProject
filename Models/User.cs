@@ -65,7 +65,8 @@ namespace VisualiserWebProject.Models
         public virtual ICollection<ModuleUserRole> ModuleUserRoles { get; set; }
         public virtual ICollection<Test> Tests { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
-
+        
+        [Display(Name = "Lecturer")]
         public string getFullName()
         {
             return userFirstName+ " " + userLastName;

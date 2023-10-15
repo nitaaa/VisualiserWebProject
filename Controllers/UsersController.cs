@@ -74,7 +74,7 @@ namespace VisualiserWebProject.Controllers
             {
                 db.Users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard", "Main");
             }
 
             return View(user);
@@ -185,7 +185,7 @@ namespace VisualiserWebProject.Controllers
                 if (ValidateUser(user.emailAddress, user.password))
                 {
                     FormsAuthentication.SetAuthCookie(user.emailAddress, true);                    
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Dashboard", "Main");
                 }
                 else
                 {
@@ -231,7 +231,11 @@ namespace VisualiserWebProject.Controllers
                     //Found user with correct password
                     flag = true;
                     //Set user cookie - for use with tests
-                    SetUserCookie(curUser.UserID.ToString());
+
+                    curUser.userFirstName = record[1].ToString();
+                    curUser.userLastName = record[2].ToString();
+                    string username = curUser.getFullName();
+                    SetUserCookie(curUser.UserID.ToString(), username);
                     break;
                 }
             }
@@ -242,21 +246,26 @@ namespace VisualiserWebProject.Controllers
         }
 
         //Setting up cookies https://www.c-sharpcorner.com/UploadFile/annathurai/cookies-in-Asp-Net/
-        public void SetUserCookie(string userID)
+        public void SetUserCookie(string userID, string fullname)
         {
             HttpCookie UID = new HttpCookie("userID");
             UID.Value = userID;
+            UID.Expires = DateTime.Now.AddHours(5);
             Response.Cookies.Add(UID);
+            HttpCookie username = new HttpCookie("username");
+            username.Value = fullname;
+            username.Expires = DateTime.Now.AddHours(5);
+            Response.Cookies.Add(username);
         }
 
         /*Logging out of the web application
          */
-        [Authorize]
         public ActionResult Logout()
         {
             //Sign user out and clear current sessions cookies
+            Request.Cookies.Remove("username");
+            Request.Cookies.Remove("userID");
             FormsAuthentication.SignOut();
-            Response.Cookies.Clear();
             return RedirectToAction("Index", "Home");
         }
     }
